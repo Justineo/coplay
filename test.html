@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<p>
+    <input type="text" name="remote" id="remote">
+    <button id="connect">Connect</button>
+</p>
+<p>
+    <input type="text" name="message" id="message">
+    <button id="send">Send</button>
+</p>
+<output id="logger" style="display: block;"></output>
+<script src="http://cdn.peerjs.com/0.3/peer.min.js"></script>
+<script>
+var logger  = document.getElementById('logger');
+function log(msg) {
+    logger.innerHTML += msg + '<br>';
+}
+
+var peer = new Peer({
+    key: 'kl2e8piw363qsemi',
+    debug: 3,
+    config: {'iceServers': [
+        { url: 'stun:stun.l.google.com:19302' }
+    ]}
+});
+
+peer.on('open', function (id) {
+    log('Peer ID: ' + id);
+});
+
+peer.on('connection', connect);
+
+function connect(c) {
+    log('Connected to Peer ' + c.peer);
+
+    var start = 0;
+    var elapsed = 0;
+
+    function heartBeat(c) {
+        start = Date.now();
+        c.send('REQ');
+    }
+
+    c.on('data', function (data) {
+        if (data === 'REQ') {
+            c.send('ACK');
+        } else if (data === 'ACK') {
+            elapsed = Date.now() - start;
+            log(elapsed / 2 + 'ms');
+            setTimeout(function () {
+                heartBeat(c);
+            }, 1000);
+        }
+    });
+
+    heartBeat(c);
+
+    c.on('close', function () {
+        log('<span style="color: #c00;>' + c.peer + ' has been disconnected.</span>');
+    });
+
+    send.onclick = function () {
+        c.send(message.value);
+    };
+}
+
+var button = document.getElementById('connect');
+var remote = document.getElementById('remote');
+button.onclick = function () {
+    var c = peer.connect(remote.value, {
+        label: 'chat',
+        serialization: 'none',
+        reliable: false,
+        metadata: {message: 'hi i want to chat with you!'}
+    });
+
+    c.on('open', function () {
+        connect(c)
+    });
+};
+</script>
+</body>
+</html>
