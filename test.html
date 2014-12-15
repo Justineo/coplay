@@ -61,14 +61,16 @@ function connect(c) {
     }
 
     c.on('data', function (data) {
-        if (data === 'REQ') {
+        if (data.type === 'REQ') {
             c.send('ACK');
-        } else if (data === 'ACK') {
+        } else if (data.type === 'ACK') {
             elapsed = Date.now() - start;
-            log(elapsed / 2 + 'ms');
+            console.log(elapsed / 2 + 'ms');
             setTimeout(function () {
                 heartBeat(c);
             }, 1000);
+        } else if (data.type === 'MSG') {
+            log(c.peer + ':<blockquote>' + data.message + '</blockquote>');
         }
     });
 
@@ -79,7 +81,10 @@ function connect(c) {
     });
 
     send.onclick = function () {
-        c.send(message.value);
+        c.send({
+            type: 'MSG',
+            message: message.value
+        });
     };
 }
 
