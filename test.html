@@ -18,7 +18,7 @@
 <script>
 var logger  = document.getElementById('logger');
 function log(msg) {
-    logger.innerHTML += msg + '<br>';
+    logger.innerHTML += '<p>' + msg + '<p>';
 }
 
 var peer = new Peer({
@@ -71,7 +71,7 @@ function connect(c) {
                 heartBeat(c);
             }, 1000);
         } else if (data.type === 'MSG') {
-            log(c.peer + ':<blockquote>' + data.message + '</blockquote>');
+            log('Remote:<br>  ' + data.message);
         }
     });
 
@@ -82,6 +82,7 @@ function connect(c) {
     });
 
     send.onclick = function () {
+        log('Me:<br>  ' + message.value);
         c.send(JSON.stringify({
             type: 'MSG',
             message: message.value
