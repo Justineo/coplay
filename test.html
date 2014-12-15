@@ -57,7 +57,9 @@ function connect(c) {
 
     function heartBeat(c) {
         start = Date.now();
-        c.send('REQ');
+        c.send(JSON.stringify({
+            type: 'REQ'
+        }));
     }
 
     c.on('data', function (data) {
@@ -87,6 +89,8 @@ function connect(c) {
             type: 'MSG',
             message: message.value
         }));
+        message.value = '';
+        message.focus();
     };
 }
 
