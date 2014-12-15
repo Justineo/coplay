@@ -61,6 +61,7 @@ function connect(c) {
     }
 
     c.on('data', function (data) {
+        data = JSON.parse(data);
         if (data.type === 'REQ') {
             c.send('ACK');
         } else if (data.type === 'ACK') {
@@ -81,7 +82,7 @@ function connect(c) {
     });
 
     send.onclick = function () {
-        c.send({
+        c.send(JSON.stringify({
             type: 'MSG',
             message: message.value
         });
