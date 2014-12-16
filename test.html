@@ -25,6 +25,7 @@ var peer = new Peer({
     key: 'kl2e8piw363qsemi',
     debug: 3,
     config: {
+        // free servers from https://gist.github.com/yetithefoot/7592580
         iceServers: [
             {
                 url: 'stun:stun.turnservers.com:3478'
@@ -111,6 +112,17 @@ peer.on('open', function (id) {
 
 peer.on('connection', connect);
 
+function pack(type, message) {
+    var p = {
+        type: type
+    };
+    if (message) {
+        p.message = message;
+    }
+
+    return JSON.stringify(p);
+};
+
 function connect(c) {
     log('Connected to Peer ' + c.peer);
 
@@ -119,15 +131,13 @@ function connect(c) {
 
     function heartBeat(c) {
         start = Date.now();
-        c.send(JSON.stringify({
-            type: 'REQ'
-        }));
+        c.send(pack('REQ'));
     }
 
     c.on('data', function (data) {
         data = JSON.parse(data);
         if (data.type === 'REQ') {
-            c.send('ACK');
+            c.send(pack('ACK'));
         } else if (data.type === 'ACK') {
             elapsed = Date.now() - start;
             console.log(elapsed / 2 + 'ms');
@@ -147,10 +157,7 @@ function connect(c) {
 
     send.onclick = function () {
         log('Me:<br>  ' + message.value);
-        c.send(JSON.stringify({
-            type: 'MSG',
-            message: message.value
-        }));
+        c.send(pack('MSG', message.value));
         message.value = '';
         message.focus();
     };
