@@ -11,13 +11,13 @@
 }
 
 body {
-    font: 14px/1.5 Helvetica, Arial, sans-serif;
+    font: 16px/1.5 Helvetica, Arial, sans-serif;
 }
 
 input,
 textarea,
 button {
-    font-family: inherit;
+    font: inherit;
     outline: none;
 }
 
@@ -39,12 +39,17 @@ button:active {
 }
 
 textarea {
-    width: 33em;
+    width: 32.5em;
     height: 8em;
+    resize: vertical;
 }
 
 #logger {
     clear: left;
+}
+
+p {
+    margin: 0 0 0.5em;
 }
 
 .row {
@@ -74,7 +79,7 @@ textarea {
 }
 
 #remote {
-    margin-left: 1em;
+    margin-left: 0.5em;
 }
 
 #send {
