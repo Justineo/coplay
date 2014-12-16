@@ -1,22 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+body {
+    font: 14px/1.5 Helvetica, Arial, sans-serif;
+}
+
+input,
+textarea,
+button {
+    font-family: inherit;
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    background-color: #ffffc0;
+}
+
+button {
+    width: 8em;
+    height: 2em;
+    background: #69c;
+    color: #fff;
+    text-shadow: 0 1px 0 #111;
+}
+
+button:active {
+    background-color: #258;
+}
+
+textarea {
+    width: 33em;
+    height: 8em;
+}
+
+#logger {
+    clear: left;
+}
+
+.row {
+    float: left;
+    clear: left;
+}
+
+.row input,
+.row textarea,
+.row button {
+    float: left;
+    margin: 0;
+    padding: 0.2em;
+    border: 2px solid #369;
+}
+
+.row input {
+    width: 12em;
+    height: 2em;
+    border-right-style: none;
+}
+
+#id {
+    background-color: #369;
+    border-right-style: solid;
+    color: #fff;
+}
+
+#remote {
+    margin-left: 1em;
+}
+
+#send {
+    float: right;
+    clear: left;
+    border-top-style: none;
+}
+</style>
 </head>
 <body>
-<p>
+<p class="row">
+    <input type="text" name="id" id="id" placeholder="My Peer ID" readonly>
     <input type="text" name="remote" id="remote">
     <button id="connect">Connect</button>
+    <button id="disconnect" hidden>Disconnect</button>
 </p>
-<p>
-    <input type="text" name="message" id="message">
+<p class="row">
+    <textarea type="text" name="message" id="message"></textarea>
     <button id="send">Send</button>
 </p>
 <output id="logger" style="display: block;"></output>
 <script src="http://cdn.peerjs.com/0.3/peer.min.js"></script>
 <script>
-var logger  = document.getElementById('logger');
+function $(id) {
+    return document.getElementById(id);
+}
+
+var logger  = $('logger');
+var conBtn = $('connect');
+var disBtn = $('disconnect');
+var remote = $('remote');
+
 function log(msg) {
     logger.innerHTML += '<p>' + msg + '<p>';
 }
@@ -106,8 +196,12 @@ var peer = new Peer({
     }
 });
 
+var pid = $('id');
+pid.onfocus = function () {
+    this.select();
+};
 peer.on('open', function (id) {
-    log('Peer ID: ' + id);
+    pid.value = id;
 });
 
 peer.on('connection', connect);
@@ -125,6 +219,10 @@ function pack(type, message) {
 
 function connect(c) {
     log('Connected to Peer ' + c.peer);
+    remote.value = c.peer;
+    remote.disabled = true;
+    conBtn.hidden = true;
+    disBtn.hidden = false;
 
     var start = 0;
     var elapsed = 0;
@@ -155,22 +253,30 @@ function connect(c) {
         log('<span style="color: #c00;>' + c.peer + ' has been disconnected.</span>');
     });
 
-    send.onclick = function () {
+    function talk() {
         log('Me:<br>  ' + message.value);
         c.send(pack('MSG', message.value));
         message.value = '';
         message.focus();
+    }
+
+    send.onclick = talk;
+
+    message.onkeydown = function (e) {
+        if (e.keyCode === 13 && (e.ctrlKey || e.metaKey)) {
+            talk();
+        }
     };
 }
 
-var button = document.getElementById('connect');
-var remote = document.getElementById('remote');
-button.onclick = function () {
+conBtn.onclick = function () {
     var c = peer.connect(remote.value, {
         label: 'chat',
         serialization: 'none',
         reliable: false,
-        metadata: {message: 'hi i want to chat with you!'}
+        metadata: {
+            message: 'hi i want to chat with you!'
+        }
     });
 
     c.on('open', function () {
