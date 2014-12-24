@@ -67,8 +67,8 @@
     /**
      * Player adaptor layer
      */
-    var player = {};
-    player.youku = {
+    var playerAdaptor = {};
+    playerAdaptor.youku = {
         prepare: function () {},
         play: function () {
             PlayerPause(false);
@@ -86,7 +86,7 @@
             return PlayerInfo().time;
         }
     };
-    player.tudou = {
+    playerAdaptor.tudou = {
         prepare: function () {
             this.player = get('tudouHomePlayer');
         },
@@ -112,7 +112,7 @@
             return this.player.notify('getPlaytime');
         }
     };
-    player.qq = {
+    playerAdaptor.qq = {
         prepare: function () {
             this.player = txv.playdata.player;
         },
@@ -132,7 +132,7 @@
             return this.player.getPlaytime();
         }
     };
-    player.iqiyi = {
+    playerAdaptor.iqiyi = {
         prepare: function () {
             this.player = get('flash');
         },
@@ -152,7 +152,7 @@
             return JSON.parse(this.player.getQiyiPlayerInfo()).currentTime / 1000;
         }
     };
-    player.sohu = {
+    playerAdaptor.sohu = {
         prepare: function () {
             this.player = get('player') || get('player_ob');
         },
@@ -172,7 +172,7 @@
             return this.player.playedTime();
         }
     };
-    player.youtube = {
+    playerAdaptor.youtube = {
         prepare: function () {
             this.player = get('movie_player');
         },
@@ -194,7 +194,7 @@
     };
 
     function initPlayer() {
-        var player = player[host];
+        var player = playerAdaptor[host];
         player.prepare();
 
         // enable after ad stops
