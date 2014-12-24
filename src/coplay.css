@@ -4,7 +4,7 @@
     bottom: 0;
     width: 3em;
     height: 3em;
-    z-index: 1024;
+    z-index: 8192;
     border: 2px solid rgba(255, 255, 255, 0.4);
     border-bottom: none;
     background-color: rgba(0, 0, 0, 0.75);

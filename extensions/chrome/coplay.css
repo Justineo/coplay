@@ -1,4 +1,4 @@
-#coplay{position:fixed;left:20px;bottom:0;width:3em;height:3em;z-index:1024;border:2px solid rgba(255,255,255,.4);border-bottom:none;background-color:rgba(0,0,0,.75);background-clip:padding-box;transition:width .5s}
+#coplay{position:fixed;left:20px;bottom:0;width:3em;height:3em;z-index:8192;border:2px solid rgba(255,255,255,.4);border-bottom:none;background-color:rgba(0,0,0,.75);background-clip:padding-box;transition:width .5s}
 #coplay.active{width:40em}
 #coplay.active #coplay-toggle{color:#c33;text-shadow:0 1px 0 #333}
 #coplay *{box-sizing:border-box}
