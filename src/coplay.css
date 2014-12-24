@@ -1,0 +1,91 @@
+#coplay {
+    position: fixed;
+    left: 20px;
+    bottom: 0;
+    width: 3em;
+    height: 3em;
+    z-index: 1024;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-bottom: none;
+    background-color: rgba(0, 0, 0, 0.75);
+    background-clip: padding-box;
+    transition: width 0.5s;
+}
+
+#coplay.active {
+    width: 40em;
+}
+
+#coplay.active #coplay-toggle {
+    color: #c33;
+    text-shadow: 0 1px 0 #333;
+}
+
+#coplay * {
+    box-sizing: border-box;
+}
+
+#coplay input,
+#coplay button {
+    height: 3em;
+    border: none;
+    background-color: transparent;
+    color: #eee;
+    outline: none;
+}
+
+#coplay input {
+    width: 11em;
+    padding-right: 1em;
+    padding-left: 1em;
+    font-family: Consolas, monospace;
+}
+
+#coplay input + input,
+#coplay input + button,
+#coplay button + input,
+#coplay button + button {
+    border-left: none;
+}
+
+#coplay input:-moz-placeholder {
+    color: #999;
+}
+#coplay input::-moz-placeholder {
+    color: #999;
+}
+#coplay input::-webkit-input-placeholder {
+    color: #999;
+}
+#coplay input:focus:-moz-placeholder {
+    color: #ccc;
+}
+#coplay input:focus::-moz-placeholder {
+    color: #ccc;
+}
+#coplay input:focus::-webkit-input-placeholder {
+    color: #ccc;
+}
+
+#coplay input:focus {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+#coplay button {
+    width: 3em;
+}
+
+#coplay button:hover:not(:disabled) {
+    color: #fff;
+    text-shadow: 0 1px 0 #111;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+#coplay button:not(:disabled) {
+    cursor: pointer;
+}
+
+#coplay button:disabled {
+    opacity: 0.3;
+}

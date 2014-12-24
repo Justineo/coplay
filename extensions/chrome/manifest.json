@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "coplay",
+  "description": "Synchronously play your videos in two browsers.",
+  "version": "0.0.1",
+  "icons": {
+    "128": "coplay.png"
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "web_accessible_resources": [
+    "peer.min.js",
+    "coplay.js",
+    "coplay.css",
+    "run.js"
+  ],
+  "browser_action": {
+    "default_icon": {
+      "128": "coplay.png"
+    }
+  },
+  "background": {
+    "scripts": [
+      "main.js"
+    ],
+    "persistent": false
+  }
+}
