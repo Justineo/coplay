@@ -35,7 +35,6 @@
     font-size: inherit;
     font-family: inherit;
     line-height: 3em;
-    text-align: center;
     outline: none;
 }
 
@@ -43,6 +42,7 @@
     width: 11em;
     padding: 0 1em;
     font-family: Consolas, monospace;
+    text-align: left;
 }
 
 #coplay input + input,
@@ -79,6 +79,7 @@
 #coplay button {
     width: 3em;
     padding: 0;
+    text-align: center;
 }
 
 #coplay button:hover:not(:disabled) {

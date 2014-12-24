@@ -2,8 +2,8 @@
 #coplay.active{width:40em}
 #coplay.active #coplay-toggle{color:#c33;text-shadow:0 1px 0 #333}
 #coplay *{box-sizing:border-box}
-#coplay button,#coplay input{float:left;height:3em;border:none;background-color:transparent;color:#eee;font-size:inherit;font-family:inherit;line-height:3em;text-align:center;outline:0}
-#coplay input{width:11em;padding:0 1em;font-family:Consolas,monospace}
+#coplay button,#coplay input{float:left;height:3em;border:none;background-color:transparent;color:#eee;font-size:inherit;font-family:inherit;line-height:3em;outline:0}
+#coplay input{width:11em;padding:0 1em;font-family:Consolas,monospace;text-align:left}
 #coplay button+button,#coplay button+input,#coplay input+button,#coplay input+input{border-left:none}
 #coplay input:-moz-placeholder{color:#999}
 #coplay input::-moz-placeholder{color:#999}
@@ -12,7 +12,7 @@
 #coplay input:focus::-moz-placeholder{color:#ccc}
 #coplay input:focus::-webkit-input-placeholder{color:#ccc}
 #coplay input:focus{color:#fff;background-color:rgba(255,255,255,.3)}
-#coplay button{width:3em;padding:0}
+#coplay button{width:3em;padding:0;text-align:center}
 #coplay button:hover:not(:disabled){color:#fff;text-shadow:0 1px 0 #111;background-color:rgba(255,255,255,.5)}
 #coplay button:not(:disabled){cursor:pointer}
 #coplay button:disabled{opacity:.3}
