@@ -1,6 +1,6 @@
 #coplay {
     position: fixed;
-    left: 20px;
+    left: 2em;
     bottom: 0;
     width: 3em;
     height: 3em;
@@ -27,17 +27,21 @@
 
 #coplay input,
 #coplay button {
+    float: left;
     height: 3em;
     border: none;
     background-color: transparent;
     color: #eee;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: 3em;
+    text-align: center;
     outline: none;
 }
 
 #coplay input {
     width: 11em;
-    padding-right: 1em;
-    padding-left: 1em;
+    padding: 0 1em;
     font-family: Consolas, monospace;
 }
 
@@ -74,6 +78,7 @@
 
 #coplay button {
     width: 3em;
+    padding: 0;
 }
 
 #coplay button:hover:not(:disabled) {
