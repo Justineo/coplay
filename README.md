@@ -15,7 +15,7 @@ Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi and YouTube.
 ### Chrome
 
 Visit `chrome://extensions` and enable developer mode.
-Load unpacked extension (`extensions/packed/coplay.zip`).
+Load unpacked extension (`extensions/chrome`).
 
 ### Firefox
 
@@ -26,3 +26,5 @@ Drag `extensions/packed/coplay.xpi` into Firefox to install.
 Both browsers visit a same video page, activate coplay and one of the users enter the other one's peer ID and connect.
 
 After establishing the connection, both users can perform pause/resume/seek/restart/sync actions.
+
+![coplay](coplay.png)
