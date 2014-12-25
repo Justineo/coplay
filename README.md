@@ -10,14 +10,13 @@ Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi and YouTube.
 
 ## Installation
 
-*Not published on Chrome Web Store or Firefox Add-ons yet.*
+*Not published on Firefox Add-ons yet.*
 
 Download URL (v0.0.1): https://github.com/Justineo/coplay/archive/0.0.1.zip
 
 ### Chrome
 
-Visit `chrome://extensions` and enable developer mode.
-Load unpacked extension (`extensions/chrome`).
+Visit [coplay on Chrome Web Store](https://chrome.google.com/webstore/detail/coplay/heolgpojkkeacaokbpolhalhlaidpkkc/) and install the extension.
 
 ### Firefox
 
