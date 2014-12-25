@@ -28,3 +28,7 @@ Both browsers visit a same video page, activate coplay and one of the users ente
 After establishing the connection, both users can perform pause/resume/seek/restart/sync actions.
 
 ![coplay](coplay.png)
+
+## One More Thing
+
+We need an appropriate **icon** for coplay!
