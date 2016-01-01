@@ -1,6 +1,6 @@
 {
   "name": "coplay",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Synchronizing video play between two peers",
   "repository": {
     "type": "git",

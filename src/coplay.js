@@ -197,10 +197,14 @@
             this.player = get('player_placeholder');
         },
         play: function () {
-            this.player.jwPlay();
+            if (!this.isStart()) {
+                this.player.jwPlay();
+            }
         },
         pause: function () {
-            this.player.jwPause();
+            if (this.isStart()) {
+                this.player.jwPause();
+            }
         },
         seek: function (sec) {
             this.player.jwSeek(sec)
