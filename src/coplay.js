@@ -210,7 +210,7 @@
             this.player.jwSeek(sec)
         },
         isStart: function () {
-            return this.player.jwGetState() == "PLAYING";
+            return this.player.jwGetState() === 'PLAYING';
         },
         getTime: function () {
             return this.player.jwGetPosition();

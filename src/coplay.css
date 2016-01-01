@@ -79,6 +79,7 @@
 #coplay button {
     width: 3em;
     padding: 0;
+    border-radius: 0;
     text-align: center;
 }
 

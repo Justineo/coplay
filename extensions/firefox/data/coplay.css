@@ -12,7 +12,7 @@
 #coplay input:focus::-moz-placeholder{color:#ccc}
 #coplay input:focus::-webkit-input-placeholder{color:#ccc}
 #coplay input:focus{color:#fff;background-color:rgba(255,255,255,.3)}
-#coplay button{width:3em;padding:0;text-align:center}
+#coplay button{width:3em;padding:0;border-radius:0;text-align:center}
 #coplay button:hover:not(:disabled){color:#fff;text-shadow:0 1px 0 #111;background-color:rgba(255,255,255,.5)}
 #coplay button:not(:disabled){cursor:pointer}
 #coplay button:disabled{opacity:.3}
