@@ -6,7 +6,7 @@ Synchronizing video play between two peers.
 
 When two browsers are playing the same web video, coplay can connect them with WebRTC (using PeerJS) and enable users to control two video players synchronously.
 
-Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi and YouTube.
+Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi, YouTube and bilibili.
 
 ## Installation
 
