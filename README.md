@@ -12,7 +12,7 @@ Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi, YouTube and bil
 
 *Not published on Firefox Add-ons yet.*
 
-Download URL (v0.0.1): https://github.com/Justineo/coplay/archive/0.0.1.zip
+Download URL: https://github.com/Justineo/coplay/zipball/gh-pages
 
 ### Chrome
 
