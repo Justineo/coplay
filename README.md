@@ -30,6 +30,12 @@ After establishing the connection, both users can perform pause/resume/seek/rest
 
 ![coplay](coplay.png)
 
+## FAQ
+
+* Why Peer ID doesn't show up on Youtube?
+
+  Youtube uses HTTPS but PeerJS (the WebRTC service which coplay rely on) will make some HTTP requests, which are blocked by browsers' security policies. Current work around see [here](http://du.screenstepslive.com/s/docs/m/7107/l/219447-allow-mixed-content-in-browsers).
+
 ## One More Thing
 
 We need an appropriate **icon** for coplay!
