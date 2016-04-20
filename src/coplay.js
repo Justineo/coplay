@@ -166,7 +166,7 @@
             this.player.seekTo(sec);
         },
         isStart: function () {
-            return this.player.getPlayerState() !== -1;
+            return true;
         },
         getTime: function () {
             return this.player.playedTime();
