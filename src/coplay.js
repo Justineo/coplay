@@ -56,7 +56,7 @@
         var p = {
             type: type
         };
-        if (data) {
+        if (data !== undefined) {
             p.data = data;
         }
 
@@ -114,7 +114,7 @@
     };
     playerAdaptor.qq = {
         prepare: function () {
-            this.player = txv.playdata.player;
+            this.player = PLAYER;
         },
         play: function () {
             this.player.play();
@@ -123,13 +123,13 @@
             this.player.pause();
         },
         seek: function (sec) {
-            this.player.setPlaytime(sec);
+            this.player.seekTo(sec);
         },
         isStart: function () {
-            return this.player.isStartPlay;
+            return this.player.getPlayerState !== -1;
         },
         getTime: function () {
-            return this.player.getPlaytime();
+            return this.player.getCurrentTime();
         }
     };
     playerAdaptor.iqiyi = {
@@ -434,6 +434,7 @@
 
         c.on('data', function (p) {
             var player = coplay.player;
+            console.log(p);
             switch (p.type) {
                 case 'REQ':
                     c.send(pack('ACK'));
@@ -460,7 +461,7 @@
                     console.log('Remote: ' + p.data);
                     break;
                 case 'SEEK':
-                    player.seek(p.data);
+                    player.seek(parseInt(p.data, 10));
                     break;
                 case 'PAUSE':
                     player.pause();

@@ -1,3 +1,6 @@
+0.0.4
+* Update to continue to support Tencent Video.
+
 0.0.3
 * Fixed SohuTV support. (They removed the API to check if the video is ready to play.)
 
