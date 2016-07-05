@@ -1,54 +1,48 @@
 var gulp = require('gulp');
-var uglify = require('gulp-uglify');
-var clean = require('gulp-minify-css');
 var fs = require('fs');
 var exec = require('child_process').exec;
+var pack = require('./package.json');
+var version = pack.version;
 
-gulp.task('minify-css', function () {
+gulp.task('cp:css', function () {
   return gulp.src('./src/coplay.css')
-    .pipe(clean({ keepBreaks: true }))
     .pipe(gulp.dest('./extensions/chrome'))
     .pipe(gulp.dest('./extensions/firefox/data'));
 });
 
-gulp.task('minify-js', function () {
+gulp.task('cp:js', function () {
   return gulp.src('./src/coplay.js')
-    .pipe(uglify())
     .pipe(gulp.dest('./extensions/chrome'))
     .pipe(gulp.dest('./extensions/firefox/data'));
 });
 
-gulp.task('pack-chrome-extension', ['minify-css', 'minify-js'], function (cb) {
+gulp.task('pack-chrome-extension', ['cp:css', 'cp:js'], function (cb) {
+  var manifestPath = './extensions/chrome/manifest.json';
+  var manifest = JSON.parse(fs.readFileSync(manifestPath, { encoding: 'utf8' }));
+  manifest.version = version;
   exec('find . -path \'*/.*\' -prune -o -type f -print | zip ../packed/coplay.zip -@', {
     cwd: 'extensions/chrome'
   }, function (error, stdout, stderr) {
     if (error) {
       return cb(error);
     } else {
-      var pack = JSON.parse(fs.readFileSync('./package.json', { encoding: 'utf8' }));
-      var version = pack.version;
-      var manifestPath = './extensions/chrome/manifest.json';
-      var manifest = JSON.parse(fs.readFileSync(manifestPath, { encoding: 'utf8' }));
-      manifest.version = version;
-      fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, '  '));
       cb();
     }
   });
 });
 
-gulp.task('pack-firefox-addon', ['minify-css', 'minify-js'], function (cb) {
-  exec('cfx xpi --output-file=../packed/coplay.xpi', {
+gulp.task('pack-firefox-addon', ['cp:css', 'cp:js'], function (cb) {
+  var fxPackPath = './extensions/firefox/package.json';
+  var fxPack = JSON.parse(fs.readFileSync(fxPackPath, { encoding: 'utf8' }));
+  fxPack.version = version;
+  fs.writeFileSync(fxPackPath, JSON.stringify(fxPack, null, '  '));
+  exec('jpm xpi', {
     cwd: 'extensions/firefox'
   }, function (error, stdout, stderr) {
     if (error) {
       return cb(error);
     } else {
-      var pack = JSON.parse(fs.readFileSync('./package.json', { encoding: 'utf8' }));
-      var version = pack.version;
-      var fxPackPath = './extensions/firefox/package.json';
-      var fxPack = JSON.parse(fs.readFileSync(fxPackPath, { encoding: 'utf8' }));
-      fxPack.version = version;
-      fs.writeFileSync(fxPackPath, JSON.stringify(fxPack, null, '  '));
+      fs.renameSync('./extensions/firefox/@' + pack.name + '-' + version + '.xpi', './extensions/packed/' + pack.name + '.xpi');
       cb();
     }
   });

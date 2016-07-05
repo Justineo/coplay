@@ -1,9 +1,13 @@
 {
-  "name": "coplay",
   "title": "coplay",
-  "id": "jid1-gmp3BTbiKEjRTw",
+  "name": "coplay",
+  "version": "0.0.4",
   "description": "Synchronously play your videos in two browsers.",
+  "main": "index.js",
   "author": "Jusineo",
-  "license": "MIT",
-  "version": "0.0.4"
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "MIT"
 }
