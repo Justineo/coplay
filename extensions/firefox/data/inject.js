@@ -40,6 +40,14 @@
         return dataset[key];
     }
 
+    let coplayOptions = {
+        server: '',
+        key: '',
+        autoActivate: false
+    };
+
+    Object.assign(coplayOptions, self.options.coplayOptions);
+    data('coplayOptions', JSON.stringify(coplayOptions));
     if (data('coplay')) {
         loadScript(url('run.js'));
         return;

@@ -3,24 +3,23 @@
      * coplay
      * Synchronizing video play between two peers
      */
-    var coplay = {};
+    let coplay = {};
 
 
     /**
      * Check if coplay is already started or not supported
      */
-    var id = 'coplay';
+    let id = 'coplay';
     if (get(id)) {
         return;
     }
 
     // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube
-    var host = location.host.match(/(youku|sohu|tudou|qq|iqiyi|youtube|bilibili).com/);
+    let host = location.host.match(/(youku|sohu|tudou|qq|iqiyi|youtube|bilibili).com/i);
     if (!host) {
         return;
     }
     host = host[1];
-
 
     /**
      * Common utilis
@@ -30,7 +29,7 @@
     }
 
     function get(id) {
-        return document.getElementById(id);
+        return top.document.getElementById(id);
     }
 
     function query(selector, elem) {
@@ -44,16 +43,18 @@
     }
 
     function create(tagName, parent, props) {
-        var elem = document.createElement(tagName);
-        for (var prop in props) {
+        let elem = document.createElement(tagName);
+        for (let prop in props) {
             elem[prop] = props[prop];
         }
-        parent.appendChild(elem);
+        if (parent) {
+            parent.appendChild(elem);
+        }
         return elem;
     }
 
     function pack(type, data) {
-        var p = {
+        let p = {
             type: type
         };
         if (data !== undefined) {
@@ -67,9 +68,12 @@
     /**
      * Player adaptor layer
      */
-    var playerAdaptor = {};
+    let playerAdaptor = {};
     playerAdaptor.youku = {
-        prepare: function () {},
+        prepare: function () {
+            // just return true if ready
+            this._player = typeof PlayerPause !== 'undefined';
+        },
         play: function () {
             PlayerPause(false);
         },
@@ -88,150 +92,162 @@
     };
     playerAdaptor.tudou = {
         prepare: function () {
-            this.player = get('tudouHomePlayer');
+            this._player = get('tudouHomePlayer');
         },
         play: function () {
-            this.player.notify('play');
+            this._player.notify('play');
         },
         pause: function () {
-            this.player.notify('pause');
+            this._player.notify('pause');
         },
         seek: function (sec) {
             // Seek in Tudou means go foward/backward,
             // so return to start and then forward to given time
-            this.player.notify('seek', [-86400]);
-            this.player.notify('seek', [sec]);
+            this._player.notify('seek', [-86400]);
+            this._player.notify('seek', [sec]);
         },
         restart: function () {
-            this.player.notify('replay');
+            this._player.notify('replay');
         },
         isStart: function () {
             return true; // not available yet
         },
         getTime: function () {
-            return this.player.notify('getPlaytime');
+            return this._player.notify('getPlaytime');
         }
     };
     playerAdaptor.qq = {
         prepare: function () {
-            this.player = PLAYER;
+            if (window.tvp) {
+                let instances = tvp.Player.instance;
+                this._player = instances[Object.keys(instances)[0]];
+            } else if (window.PLAYER) {
+                this._player = PLAYER;
+            }
         },
         play: function () {
-            this.player.play();
+            this._player.play();
         },
         pause: function () {
-            this.player.pause();
+            this._player.pause();
         },
         seek: function (sec) {
-            this.player.seekTo(sec);
+            this._player.seekTo(sec);
         },
         isStart: function () {
-            return this.player.getPlayerState !== -1;
+            if (window.tvp) {
+                return !this._player.isPlayingLoadingAd();
+            } else if (window.PLAYER) {
+                return this._player.getPlayerState() !== -1;
+            }
         },
         getTime: function () {
-            return this.player.getCurrentTime();
+            if (window.tvp) {
+                return this._player.getCurTime();
+            } else if (window.PLAYER) {
+                return this._player.getCurrentTime();
+            }
         }
     };
     playerAdaptor.iqiyi = {
         prepare: function () {
-            this.player = get('flash');
+            this._player = get('flash');
         },
         play: function () {
-            this.player.resumeQiyiVideo();
+            this._player.resumeQiyiVideo();
         },
         pause: function () {
-            this.player.pauseQiyiVideo();
+            this._player.pauseQiyiVideo();
         },
         seek: function (sec) {
-            this.player.seekQiyiVideo(sec);
+            this._player.seekQiyiVideo(sec);
         },
         isStart: function () {
             return true; // not available yet
         },
         getTime: function () {
-            return JSON.parse(this.player.getQiyiPlayerInfo()).currentTime / 1000;
+            return JSON.parse(this._player.getQiyiPlayerInfo()).currentTime / 1000;
         }
     };
     playerAdaptor.sohu = {
         prepare: function () {
-            this.player = get('player') || get('player_ob');
+            this._player = get('player') || get('player_ob');
         },
         play: function () {
-            this.player.playVideo();
+            this._player.playVideo();
         },
         pause: function () {
-            this.player.pauseVideo();
+            this._player.pauseVideo();
         },
         seek: function (sec) {
-            this.player.seekTo(sec);
+            this._player.seekTo(sec);
         },
         isStart: function () {
             return true;
         },
         getTime: function () {
-            return this.player.playedTime();
+            return this._player.playedTime();
         }
     };
     playerAdaptor.youtube = {
         prepare: function () {
-            this.player = get('movie_player');
+            this._player = get('movie_player');
         },
         play: function () {
-            this.player.playVideo();
+            this._player.playVideo();
         },
         pause: function () {
-            this.player.pauseVideo();
+            this._player.pauseVideo();
         },
         seek: function (sec) {
-            this.player.seekTo(sec, true);
+            this._player.seekTo(sec, true);
         },
         isStart: function () {
             return true;
         },
         getTime: function () {
-            return this.player.getCurrentTime();
+            return this._player.getCurrentTime();
         }
     };
     playerAdaptor.bilibili = {
         prepare: function () {
-            this.player = get('player_placeholder');
+            this._player = get('player_placeholder');
         },
         play: function () {
             if (!this.isStart()) {
-                this.player.jwPlay();
+                this._player.jwPlay();
             }
         },
         pause: function () {
             if (this.isStart()) {
-                this.player.jwPause();
+                this._player.jwPause();
             }
         },
         seek: function (sec) {
-            this.player.jwSeek(sec)
+            this._player.jwSeek(sec)
         },
         isStart: function () {
-            return this.player.jwGetState() === 'PLAYING';
+            return this._player.jwGetState() === 'PLAYING';
         },
         getTime: function () {
-            return this.player.jwGetPosition();
+            return this._player.jwGetPosition();
         }
     };
 
-    function initPlayer() {
-        var player = playerAdaptor[host];
-        player.prepare();
+    function initPlayer(done) {
+        let player = playerAdaptor[host];
 
-        // enable after ad stops
-        if (!player.isStart()) {
-            coplay.disable();
-            var timer = setInterval(function () {
-                if (player.isStart()) {
-                    coplay.enable();
-                    clearInterval(timer);
+        (function prepare() {
+            player.prepare();
+            if (player._player) {
+                coplay.player = player;
+                if (typeof done === 'function') {
+                    done();
                 }
-            }, 500);
-        }
-        coplay.player = player;
+            } else {
+                setTimeout(prepare, 500);
+            }
+        })();
     }
 
 
@@ -239,11 +255,12 @@
      * coplay UI
      */
     function initUI() {
-        var main = create('article', document.body, {
-            id: id
+        let main = create('article', document.body, {
+            id: id,
+            className: coplayOptions.autoActivate ? 'active' : ''
         });
 
-        var toggle = create('button', main, {
+        let toggle = create('button', main, {
             id: getId('toggle'),
             innerHTML: '<span class="fa fa-heart"></span>'
         });
@@ -251,7 +268,7 @@
             main.classList.toggle('active');
         };
 
-        var local = create('input', main, {
+        let local = create('input', main, {
             id: getId('local'),
             type: 'text',
             placeholder: 'Peer ID',
@@ -262,13 +279,13 @@
             return false;
         };
 
-        var remote = create('input', main, {
+        let remote = create('input', main, {
             id: getId('remote'),
             type: 'text',
             placeholder: 'Remote peer ID'
         });
 
-        var connect = create('button', main, {
+        let connect = create('button', main, {
             id: getId('connect'),
             innerHTML: '<span class="fa fa-plug"></span>'
         });
@@ -277,7 +294,7 @@
             return false;
         };
 
-        var disconnect = create('button', main, {
+        let disconnect = create('button', main, {
             id: getId('disconnect'),
             hidden: true,
             innerHTML: '<span class="fa fa-close"></span>'
@@ -287,7 +304,7 @@
             return false;
         };
 
-        var play = create('button', main, {
+        let play = create('button', main, {
             id: getId('play'),
             innerHTML: '<span class="fa fa-play"></span>',
             title: 'Play'
@@ -298,7 +315,7 @@
             return false;
         };
 
-        var pause = create('button', main, {
+        let pause = create('button', main, {
             id: getId('pause'),
             innerHTML: '<span class="fa fa-pause"></span>',
             title: 'Pause'
@@ -309,19 +326,19 @@
             return false;
         };
 
-        var sync = create('button', main, {
+        let sync = create('button', main, {
             id: getId('sync'),
             innerHTML: '<span class="fa fa-refresh"></span>',
             title: 'Sync with me'
         });
         sync.onclick = function () {
-            var time = coplay.player.getTime();
+            let time = coplay.player.getTime();
             coplay.player.seek(time);
             coplay.remote.send(pack('SEEK', time));
             return false;
         };
 
-        var restart = create('button', main, {
+        let restart = create('button', main, {
             id: getId('restart'),
             innerHTML: '<span class="fa fa-step-backward"></span>',
             title: 'Restart'
@@ -348,53 +365,94 @@
             sync: sync,
             restart: restart
         };
+
+        // enable after ad stops
+        if (!coplay.player.isStart()) {
+            coplay.disable();
+            (function wait() {
+                if (coplay.player.isStart()) {
+                    coplay.enable();
+                } else {
+                    setTimeout(wait, 500);
+                }
+            })();
+        }
     }
 
     coplay.remote = {
         send: function () {
-            var c = coplay.connection;
+            let c = coplay.connection;
             if (c) {
                 c.send.apply(c, arguments);
             }
         }
     }
 
+    function parseURL(url) {
+        let a = create('a', null, {
+            href: url
+        });
+
+        let { protocol, hostname, pathname, port } = a;
+        return {
+            protocol,
+            host: hostname,
+            path: pathname,
+            port
+        };
+    }
+
     function initPeer() {
         if (!window.Peer) {
-            throw 'Cannot initialize peer.';
+            throw new Error('Cannot initialize peer.');
         }
 
-        var peer = new Peer({
+        let peerOptions = {
             key: 'kl2e8piw363qsemi',
             config: {
                 // free servers from https://gist.github.com/yetithefoot/7592580
                 iceServers: [
                     { url: 'stun:stun.turnservers.com:3478' },
-                    { url:'stun:stun01.sipphone.com' },
-                    { url:'stun:stun.ekiga.net' },
-                    { url:'stun:stun.fwdnet.net' },
-                    { url:'stun:stun.ideasip.com' },
-                    { url:'stun:stun.iptel.org' },
-                    { url:'stun:stun.rixtelecom.se' },
-                    { url:'stun:stun.schlund.de' },
-                    { url:'stun:stun.l.google.com:19302' },
-                    { url:'stun:stun1.l.google.com:19302' },
-                    { url:'stun:stun2.l.google.com:19302' },
-                    { url:'stun:stun3.l.google.com:19302' },
-                    { url:'stun:stun4.l.google.com:19302' },
-                    { url:'stun:stunserver.org' },
-                    { url:'stun:stun.softjoys.com' },
-                    { url:'stun:stun.voiparound.com' },
-                    { url:'stun:stun.voipbuster.com' },
-                    { url:'stun:stun.voipstunt.com' },
-                    { url:'stun:stun.voxgratia.org' },
-                    { url:'stun:stun.xten.com' },
+                    { url: 'stun:stun01.sipphone.com' },
+                    { url: 'stun:stun.ekiga.net' },
+                    { url: 'stun:stun.fwdnet.net' },
+                    { url: 'stun:stun.ideasip.com' },
+                    { url: 'stun:stun.iptel.org' },
+                    { url: 'stun:stun.rixtelecom.se' },
+                    { url: 'stun:stun.schlund.de' },
+                    { url: 'stun:stun.l.google.com:19302' },
+                    { url: 'stun:stun1.l.google.com:19302' },
+                    { url: 'stun:stun2.l.google.com:19302' },
+                    { url: 'stun:stun3.l.google.com:19302' },
+                    { url: 'stun:stun4.l.google.com:19302' },
+                    { url: 'stun:stunserver.org' },
+                    { url: 'stun:stun.softjoys.com' },
+                    { url: 'stun:stun.voiparound.com' },
+                    { url: 'stun:stun.voipbuster.com' },
+                    { url: 'stun:stun.voipstunt.com' },
+                    { url: 'stun:stun.voxgratia.org' },
+                    { url: 'stun:stun.xten.com' },
                     { url: 'turn:numb.viagenie.ca', credential: 'muazkh', username: 'webrtc@live.com' },
                     { url: 'turn:192.158.29.39:3478?transport=udp', credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=', username: '28224511:1379330808' },
                     { url: 'turn:192.158.29.39:3478?transport=tcp', credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=', username: '28224511:1379330808' }
                 ]
             }
-        });
+        };
+        let server = coplayOptions.server;
+        if (server) {
+            let url = parseURL(server);
+            peerOptions.host = url.host || undefined;
+            peerOptions.path = url.path || undefined;
+            peerOptions.port = url.port || undefined;
+
+            if (url.protocol === 'https:') {
+                peerOptions.secure = true;
+            }
+            if (coplayOptions.key) {
+                peerOptions.key = coplayOptions.key;
+            }
+        }
+        let peer = new Peer(peerOptions);
 
         peer.on('open', function (id) {
             coplay.ui.local.value = id;
@@ -408,16 +466,16 @@
     function connect(c) {
         coplay.connection = c;
 
-        var ui = coplay.ui;
+        let ui = coplay.ui;
         ui.remote.value = c.peer;
         ui.remote.disabled = true;
         ui.connect.hidden = true;
         ui.disconnect.hidden = false;
 
-        var start = 0;
-        var elapsed = 0;
-        var round = 0;
-        var count = 0;
+        let start = 0;
+        let elapsed = 0;
+        let round = 0;
+        let count = 0;
 
         function heartBeat() {
             start = Date.now();
@@ -433,7 +491,7 @@
         }
 
         c.on('data', function (p) {
-            var player = coplay.player;
+            let player = coplay.player;
             console.log(p);
             switch (p.type) {
                 case 'REQ':
@@ -485,16 +543,17 @@
     }
 
     coplay.init = function () {
-        var main = get(id);
+        let main = get(id);
         if (!main) {
-            initUI();
-            initPlayer();
-            initPeer();
+            initPlayer(function () {
+                initUI();
+                initPeer();
+            });
         }
     };
 
     coplay.setDisabled = function (isDisabled) {
-        var ui = coplay.ui;
+        let ui = coplay.ui;
         ui.play.disabled = isDisabled;
         ui.pause.disabled = isDisabled;
         ui.sync.disabled = isDisabled;
@@ -511,7 +570,7 @@
 
     coplay.connect = function (remote) {
 
-        var c = coplay.peer.connect(remote, {
+        let c = coplay.peer.connect(remote, {
             label: 'coplay',
             serialization: 'json',
             reliable: false
@@ -523,12 +582,17 @@
     };
 
     coplay.disconnect = function () {
-        var c = coplay.connection;
+        let c = coplay.connection;
         if (c) {
             c.close();
         }
     };
 
     window.coplay = coplay;
+
+    /**
+     * Get options and start
+     */
+    let coplayOptions = JSON.parse(document.body.dataset['coplayOptions']);
     coplay.init();
 })();

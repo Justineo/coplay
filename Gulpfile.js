@@ -20,6 +20,7 @@ gulp.task('pack-chrome-extension', ['cp:css', 'cp:js'], function (cb) {
   var manifestPath = './extensions/chrome/manifest.json';
   var manifest = JSON.parse(fs.readFileSync(manifestPath, { encoding: 'utf8' }));
   manifest.version = version;
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, '  '));
   exec('find . -path \'*/.*\' -prune -o -type f -print | zip ../packed/coplay.zip -@', {
     cwd: 'extensions/chrome'
   }, function (error, stdout, stderr) {

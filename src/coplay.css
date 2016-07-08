@@ -10,6 +10,7 @@
     background-color: rgba(0, 0, 0, 0.75);
     background-clip: padding-box;
     transition: width 0.5s;
+    font-size: 12px;
 }
 
 #coplay.active {

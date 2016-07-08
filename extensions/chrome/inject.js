@@ -40,15 +40,26 @@
         return dataset[key];
     }
 
-    if (data('coplay')) {
-        loadScript(url('run.js'));
-        return;
-    } else {
-        data('coplay', true);
-        loadStyle(url('coplay.css'));
-        loadStyle('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
-        loadScript(url('peer.min.js'), function () {
-            loadScript(url('coplay.js'));
-        });
-    }
+    let coplayOptions = {
+        server: '',
+        key: '',
+        autoActivate: false
+    };
+
+    let storage = chrome.storage.sync || chrome.storage.local;
+    storage.get(coplayOptions, options => {
+        coplayOptions = Object.assign(coplayOptions, options);
+        data('coplayOptions', JSON.stringify(coplayOptions));
+        if (data('coplay')) {
+            loadScript(url('run.js'));
+            return;
+        } else {
+            data('coplay', true);
+            loadStyle(url('coplay.css'));
+            loadStyle('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+            loadScript(url('peer.min.js'), function () {
+                loadScript(url('coplay.js'));
+            });
+        }
+    });
 })();

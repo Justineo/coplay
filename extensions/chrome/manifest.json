@@ -2,12 +2,29 @@
   "manifest_version": 2,
   "name": "coplay",
   "description": "Synchronously play your videos in two browsers.",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "icons": {
     "128": "coplay.png"
   },
   "permissions": [
-    "activeTab"
+    "http://*.youku.com/*",
+    "https://*.youku.com/*",
+    "http://*.sohu.com/*",
+    "https://*.sohu.com/*",
+    "http://*.tudou.com/*",
+    "https://*.tudou.com/*",
+    "http://*.qq.com/*",
+    "https://*.qq.com/*",
+    "http://*.iqiyi.com/*",
+    "https://*.iqiyi.com/*",
+    "http://*.youtube.com/*",
+    "https://*.youtube.com/*",
+    "http://*.bilibili.com/*",
+    "https://*.bilibili.com/*",
+    "activeTab",
+    "webNavigation",
+    "storage",
+    "tabs"
   ],
   "web_accessible_resources": [
     "peer.min.js",
@@ -25,5 +42,9 @@
       "main.js"
     ],
     "persistent": false
+  },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
   }
 }

@@ -1,10 +1,31 @@
 {
   "title": "coplay",
   "name": "coplay",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Synchronously play your videos in two browsers.",
   "main": "index.js",
   "author": "Jusineo",
+  "preferences": [
+    {
+      "name": "server",
+      "title": "Custom server",
+      "type": "string",
+      "description": "Custom PeerJS server."
+    },
+    {
+      "name": "key",
+      "title": "Key",
+      "type": "string",
+      "description": "API key required by the custom PeerJS server."
+    },
+    {
+      "name": "autoActivate",
+      "title": "Auto-activate",
+      "type": "bool",
+      "description": "Automatically activate coplay on applicable sites.",
+      "value": false
+    }
+  ],
   "engines": {
     "firefox": ">=38.0a1",
     "fennec": ">=38.0a1"
