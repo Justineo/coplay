@@ -12,7 +12,8 @@ const DOMAINS = [
     'qq.com',
     'iqiyi.com',
     'youtube.com',
-    'bilibili.com'
+    'bilibili.com',
+    'le.com'
 ];
 
 let urlOptions = {
