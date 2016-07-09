@@ -1,14 +1,3 @@
-const DOMAINS = [
-    'youku.com',
-    'sohu.com',
-    'tudou.com',
-    'qq.com',
-    'iqiyi.com',
-    'youtube.com',
-    'bilibili.com',
-    'le.com',
-    'vimeo.com'
-];
 let storage = chrome.storage.sync || chrome.storage.local;
 
 function inject() {
@@ -26,10 +15,9 @@ function checkAutoInject() {
         autoActivate: false
     }, item => {
         if (item.autoActivate) {
-            let filters = DOMAINS.map(domain => {
-                return { hostSuffix: domain };
-            });
-            chrome.webNavigation.onCompleted.addListener(inject, { url: filters });
+            chrome.webNavigation.onCompleted.addListener(inject, { url: [
+                { urlMatches: '(?:^|\.)(youku|sohu|tudou|qq|iqiyi|youtube|bilibili|le|vimeo)\.com' }
+            ]});
             console.log('Auto injector bound.');
         } else {
             if (chrome.webNavigation.onCompleted.hasListener(inject)) {
