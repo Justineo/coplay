@@ -23,6 +23,8 @@
     "https://*.bilibili.com/*",
     "http://*.le.com/*",
     "https://*.le.com/*",
+    "http://*.vimeo.com/*",
+    "https://*.vimeo.com/*",
     "activeTab",
     "webNavigation",
     "storage",

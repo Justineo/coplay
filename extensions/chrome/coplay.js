@@ -15,7 +15,7 @@
     }
 
     // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube
-    let host = location.host.match(/(?:^|\.)(youku|sohu|tudou|qq|iqiyi|youtube|bilibili|le)\.com/i);
+    let host = location.host.match(/(?:^|\.)(youku|sohu|tudou|qq|iqiyi|youtube|bilibili|le|vimeo)\.com/i);
     if (!host) {
         return;
     }
@@ -251,6 +251,28 @@
         },
         getTime: function () {
             return this._player.getVideoTime();
+        }
+    };
+    playerAdaptor.vimeo = {
+        prepare: function () {
+            if (window.PlayerManager) {
+                this._player = PlayerManager.getPlayer(query('.video video'));
+            }
+        },
+        play: function () {
+            this._player.play();
+        },
+        pause: function () {
+            this._player.pause();
+        },
+        seek: function (sec) {
+            this._player.currentTime = sec;
+        },
+        isStart: function () {
+            return this._player.paused;
+        },
+        getTime: function () {
+            return this._player.currentTime();
         }
     };
 
