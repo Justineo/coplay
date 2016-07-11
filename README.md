@@ -12,17 +12,13 @@ Buttons on control bar stands for "connect"/"disconnect", "play", "pause", "sync
 
 ## Installation
 
-*Not published on Firefox Add-ons yet.*
-
-Download URL: https://github.com/Justineo/coplay/zipball/gh-pages
-
 ### Chrome
 
-Visit [Coplay on Chrome Web Store](https://chrome.google.com/webstore/detail/coplay/heolgpojkkeacaokbpolhalhlaidpkkc/) and install the extension.
+Visit [Coplay on Chrome Web Store](https://chrome.google.com/webstore/detail/coplay/heolgpojkkeacaokbpolhalhlaidpkkc/) to install.
 
 ### Firefox
 
-Drag `extensions/packed/coplay.xpi` into Firefox to install.
+Visit [Coplay on Firefox Add-ons](https://addons.mozilla.org/firefox/addon/coplay/) to install.
 
 ## Usage
 
