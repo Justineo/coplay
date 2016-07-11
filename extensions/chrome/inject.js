@@ -18,14 +18,6 @@
         document.getElementsByTagName('head')[0].appendChild(elem);
     }
 
-    function loadStyle(url) {
-        var elem = document.createElement('link');
-        elem.rel = 'stylesheet';
-        elem.type = 'text/css';
-        elem.href = url;
-        document.getElementsByTagName('head')[0].appendChild(elem);
-    }
-
     function url(file) {
         return chrome.extension.getURL(file);
     }
@@ -55,8 +47,6 @@
             return;
         } else {
             data('coplay', true);
-            loadStyle(url('coplay.css'));
-            loadStyle('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
             loadScript(url('peer.min.js'), function () {
                 loadScript(url('coplay.js'));
             });

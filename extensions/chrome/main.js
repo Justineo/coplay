@@ -5,6 +5,7 @@ function inject() {
         console.error(chrome.runtime.lastError.message);
     }
     chrome.tabs.executeScript(null, { file: 'inject.js' });
+    chrome.tabs.insertCSS(null, { file: 'coplay.css' });
     console.log('Injector executed.');
 }
 

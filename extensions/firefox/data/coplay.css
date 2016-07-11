@@ -5,7 +5,8 @@
     width: 3em;
     height: 3em;
     z-index: 8192;
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 3px #000;
     border-bottom: none;
     background-color: rgba(0, 0, 0, 0.75);
     background-clip: padding-box;
@@ -53,17 +54,13 @@
     border-left: none;
 }
 
-#coplay input:-moz-placeholder {
-    color: #999;
-}
 #coplay input::-moz-placeholder {
+    font-family: inherit;
     color: #999;
 }
 #coplay input::-webkit-input-placeholder {
+    font-family: inherit;
     color: #999;
-}
-#coplay input:focus:-moz-placeholder {
-    color: #ccc;
 }
 #coplay input:focus::-moz-placeholder {
     color: #ccc;
@@ -97,3 +94,40 @@
 #coplay button:disabled {
     opacity: 0.3;
 }
+
+@font-face {
+  font-family: 'coplay';
+  src: url(data:application/font-woff;base64,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) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="coplay-"]:before, [class*=" coplay-"]:before {
+  font-family: "coplay";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  margin-left: .2em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
+}
+
+.coplay-sync:before { content: '\e809'; } /* '' */
+.coplay-play:before { content: '\e80a'; } /* '' */
+.coplay-pause:before { content: '\e80b'; } /* '' */
+.coplay-restart:before { content: '\e80c'; } /* '' */
+.coplay-cancel:before { content: '\e80d'; } /* '' */
+.coplay-heart:before { content: '\e80e'; } /* '' */
+.coplay-plug:before { content: '\f1e6'; } /* '' */

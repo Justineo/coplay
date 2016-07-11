@@ -1,22 +1,34 @@
 var gulp = require('gulp');
+var replace = require('gulp-replace');
+var Datauri = require('datauri');
 var fs = require('fs');
 var exec = require('child_process').exec;
 var pack = require('./package.json');
 var version = pack.version;
 
-gulp.task('cp:css', function () {
-  return gulp.src('./src/coplay.css')
+gulp.task('res:chrome', function () {
+  gulp.src('./src/coplay.css')
+    .pipe(replace(/(url\()(['"]?)([^)]+)\2/, function (matched, $1, $2, $3) {
+      return $1 + 'chrome-extension://__MSG_@@extension_id__/' + $3;
+    }))
+    .pipe(gulp.dest('./extensions/chrome'));
+});
+
+gulp.task('res:firefox', function () {
+  gulp.src('./src/coplay.css')
+    .pipe(replace(/(url\()(['"]?)([^)]+)\2/, function (matched, $1, $2, $3) {
+      return $1 + new Datauri('src/' + $3).content;
+    }))
+    .pipe(gulp.dest('./extensions/firefox/data'));
+});
+
+gulp.task('cp', ['res:chrome', 'res:firefox'], function () {
+  return gulp.src(['./src/*', '!./src/coplay.css'])
     .pipe(gulp.dest('./extensions/chrome'))
     .pipe(gulp.dest('./extensions/firefox/data'));
 });
 
-gulp.task('cp:js', function () {
-  return gulp.src('./src/coplay.js')
-    .pipe(gulp.dest('./extensions/chrome'))
-    .pipe(gulp.dest('./extensions/firefox/data'));
-});
-
-gulp.task('pack-chrome-extension', ['cp:css', 'cp:js'], function (cb) {
+gulp.task('pack-chrome-extension', ['cp'], function (cb) {
   var manifestPath = './extensions/chrome/manifest.json';
   var manifest = JSON.parse(fs.readFileSync(manifestPath, { encoding: 'utf8' }));
   manifest.version = version;
@@ -32,7 +44,7 @@ gulp.task('pack-chrome-extension', ['cp:css', 'cp:js'], function (cb) {
   });
 });
 
-gulp.task('pack-firefox-addon', ['cp:css', 'cp:js'], function (cb) {
+gulp.task('pack-firefox-addon', ['cp'], function (cb) {
   var fxPackPath = './extensions/firefox/package.json';
   var fxPack = JSON.parse(fs.readFileSync(fxPackPath, { encoding: 'utf8' }));
   fxPack.version = version;

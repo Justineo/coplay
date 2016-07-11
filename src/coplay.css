@@ -5,7 +5,8 @@
     width: 3em;
     height: 3em;
     z-index: 8192;
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 3px #000;
     border-bottom: none;
     background-color: rgba(0, 0, 0, 0.75);
     background-clip: padding-box;
@@ -53,17 +54,13 @@
     border-left: none;
 }
 
-#coplay input:-moz-placeholder {
-    color: #999;
-}
 #coplay input::-moz-placeholder {
+    font-family: inherit;
     color: #999;
 }
 #coplay input::-webkit-input-placeholder {
+    font-family: inherit;
     color: #999;
-}
-#coplay input:focus:-moz-placeholder {
-    color: #ccc;
 }
 #coplay input:focus::-moz-placeholder {
     color: #ccc;
@@ -97,3 +94,40 @@
 #coplay button:disabled {
     opacity: 0.3;
 }
+
+@font-face {
+  font-family: 'coplay';
+  src: url(coplay.woff) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="coplay-"]:before, [class*=" coplay-"]:before {
+  font-family: "coplay";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  margin-left: .2em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
+}
+
+.coplay-sync:before { content: '\e809'; } /* '' */
+.coplay-play:before { content: '\e80a'; } /* '' */
+.coplay-pause:before { content: '\e80b'; } /* '' */
+.coplay-restart:before { content: '\e80c'; } /* '' */
+.coplay-cancel:before { content: '\e80d'; } /* '' */
+.coplay-heart:before { content: '\e80e'; } /* '' */
+.coplay-plug:before { content: '\f1e6'; } /* '' */

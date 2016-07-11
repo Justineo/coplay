@@ -257,6 +257,17 @@
         prepare: function () {
             if (window.PlayerManager) {
                 this._player = PlayerManager.getPlayer(query('.video video'));
+                let s = create('style', document.body, {
+                    textContent: `
+                        #coplay.active #coplay-toggle {
+                            color: #${this._player.color};
+                        }
+                        #coplay input:focus,
+                        #coplay button:hover:not(:disabled) {
+                            color: #fff;
+                            background-color: #${this._player.color};
+                        }`
+                });
             }
         },
         play: function () {
@@ -304,7 +315,7 @@
 
         let toggle = create('button', main, {
             id: getId('toggle'),
-            innerHTML: '<span class="fa fa-heart"></span>'
+            innerHTML: '<span class="coplay-heart"></span>'
         });
         toggle.onclick = function () {
             main.classList.toggle('active');
@@ -329,7 +340,7 @@
 
         let connect = create('button', main, {
             id: getId('connect'),
-            innerHTML: '<span class="fa fa-plug"></span>'
+            innerHTML: '<span class="coplay-plug"></span>'
         });
         connect.onclick = function () {
             coplay.connect(remote.value);
@@ -339,7 +350,7 @@
         let disconnect = create('button', main, {
             id: getId('disconnect'),
             hidden: true,
-            innerHTML: '<span class="fa fa-close"></span>'
+            innerHTML: '<span class="coplay-cancel"></span>'
         });
         disconnect.onclick = function () {
             coplay.disconnect();
@@ -348,7 +359,7 @@
 
         let play = create('button', main, {
             id: getId('play'),
-            innerHTML: '<span class="fa fa-play"></span>',
+            innerHTML: '<span class="coplay-play"></span>',
             title: 'Play'
         });
         play.onclick = function () {
@@ -359,7 +370,7 @@
 
         let pause = create('button', main, {
             id: getId('pause'),
-            innerHTML: '<span class="fa fa-pause"></span>',
+            innerHTML: '<span class="coplay-pause"></span>',
             title: 'Pause'
         });
         pause.onclick = function () {
@@ -370,7 +381,7 @@
 
         let sync = create('button', main, {
             id: getId('sync'),
-            innerHTML: '<span class="fa fa-refresh"></span>',
+            innerHTML: '<span class="coplay-sync"></span>',
             title: 'Sync with me'
         });
         sync.onclick = function () {
@@ -382,7 +393,7 @@
 
         let restart = create('button', main, {
             id: getId('restart'),
-            innerHTML: '<span class="fa fa-step-backward"></span>',
+            innerHTML: '<span class="coplay-restart"></span>',
             title: 'Restart'
         });
         restart.onclick = function () {

@@ -20,11 +20,11 @@ const DOMAINS = [
 let urlOptions = {
   'run.js': self.data.url('./run.js'),
   'peer.min.js': self.data.url('./peer.min.js'),
-  'coplay.js': self.data.url('./coplay.js'),
-  'coplay.css': self.data.url('./coplay.css')
+  'coplay.js': self.data.url('./coplay.js')
 };
 let contentScriptConfig = {
-  contentScriptFile: self.data.url('./inject.js')
+  contentScriptFile: self.data.url('./inject.js'),
+  contentStyleFile: self.data.url('./coplay.css')
 };
 
 function getCoplayOptions() {
