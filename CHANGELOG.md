@@ -1,3 +1,10 @@
+0.1.2
+* Inlined icons for Chrome as well.
+
+0.1.1
+* Used local icons and inlined icons as data URI for Firefox.
+* Added color adaption for Vimeo.
+
 0.1.0
 * Supported specifying custom server.
 * Supported the option to automatically activate coplay on applicable sites.

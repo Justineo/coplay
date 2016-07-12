@@ -1,4 +1,6 @@
 (function () {
+    'use strict';
+
     /**
      * coplay
      * Synchronizing video play between two peers
