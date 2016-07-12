@@ -12,6 +12,7 @@
     background-clip: padding-box;
     transition: width 0.5s;
     font-size: 12px;
+    box-sizing: content-box;
 }
 
 #coplay.active {
@@ -97,7 +98,7 @@
 
 @font-face {
   font-family: 'coplay';
-  src: url(coplay.woff) format('woff');
+  src: url(coplay.woff);
   font-weight: normal;
   font-style: normal;
 }

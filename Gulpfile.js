@@ -6,23 +6,16 @@ var exec = require('child_process').exec;
 var pack = require('./package.json');
 var version = pack.version;
 
-gulp.task('res:chrome', function () {
-  gulp.src('./src/coplay.css')
-    .pipe(replace(/(url\()(['"]?)([^)]+)\2/, function (matched, $1, $2, $3) {
-      return $1 + 'chrome-extension://__MSG_@@extension_id__/' + $3;
-    }))
-    .pipe(gulp.dest('./extensions/chrome'));
-});
-
-gulp.task('res:firefox', function () {
-  gulp.src('./src/coplay.css')
+gulp.task('res', function () {
+  return gulp.src('./src/coplay.css')
     .pipe(replace(/(url\()(['"]?)([^)]+)\2/, function (matched, $1, $2, $3) {
       return $1 + new Datauri('src/' + $3).content;
     }))
+    .pipe(gulp.dest('./extensions/chrome'))
     .pipe(gulp.dest('./extensions/firefox/data'));
 });
 
-gulp.task('cp', ['res:chrome', 'res:firefox'], function () {
+gulp.task('cp', ['res'], function () {
   return gulp.src(['./src/*', '!./src/coplay.css'])
     .pipe(gulp.dest('./extensions/chrome'))
     .pipe(gulp.dest('./extensions/firefox/data'));

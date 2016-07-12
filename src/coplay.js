@@ -260,12 +260,13 @@
                 let s = create('style', document.body, {
                     textContent: `
                         #coplay.active #coplay-toggle {
-                            color: #${this._player.color};
+                            color: #${this._player.color} !important;
                         }
                         #coplay input:focus,
-                        #coplay button:hover:not(:disabled) {
-                            color: #fff;
-                            background-color: #${this._player.color};
+                        #coplay button:not(:disabled):hover,
+                        #coplay.active #coplay-toggle:hover {
+                            color: #fff !important;
+                            background-color: #${this._player.color} !important;
                         }`
                 });
             }
