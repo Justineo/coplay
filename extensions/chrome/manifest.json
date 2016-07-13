@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Coplay",
-  "description": "Synchronously play your videos in two browsers.",
-  "version": "0.1.2",
+  "description": "Synchronizing video play between two peers.",
+  "version": "0.2.0",
   "icons": {
     "128": "coplay.png"
   },
@@ -31,7 +31,7 @@
     "tabs"
   ],
   "web_accessible_resources": [
-    "peer.min.js",
+    "peer.js",
     "coplay.js",
     "coplay.woff",
     "run.js"

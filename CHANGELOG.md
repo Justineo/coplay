@@ -1,3 +1,7 @@
+0.2.0
+* Supported fullscreen mode.
+* Used source code version of `peer.js`.
+
 0.1.2
 * Inlined icons for Chrome as well.
 

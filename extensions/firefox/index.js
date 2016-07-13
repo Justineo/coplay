@@ -19,7 +19,7 @@ const DOMAINS = [
 
 let urlOptions = {
   'run.js': self.data.url('./run.js'),
-  'peer.min.js': self.data.url('./peer.min.js'),
+  'peer.js': self.data.url('./peer.js'),
   'coplay.js': self.data.url('./coplay.js')
 };
 let contentScriptConfig = {

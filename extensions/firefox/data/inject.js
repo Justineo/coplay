@@ -45,7 +45,7 @@
         return;
     } else {
         data('coplay', true);
-        loadScript(url('peer.min.js'), function () {
+        loadScript(url('peer.js'), function () {
             loadScript(url('coplay.js'));
         });
     }

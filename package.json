@@ -1,7 +1,7 @@
 {
   "name": "coplay",
-  "version": "0.1.2",
-  "description": "Synchronizing video play between two peers",
+  "version": "0.2.0",
+  "description": "Synchronizing video play between two peers.",
   "repository": {
     "type": "git",
     "url": "https://github.com/Justineo/coplay.git"

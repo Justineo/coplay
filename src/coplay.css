@@ -4,7 +4,7 @@
     bottom: 0;
     width: 3em;
     height: 3em;
-    z-index: 8192;
+    z-index: 2147483647; /* max integer */
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 0 3px #000;
     border-bottom: none;
@@ -16,7 +16,7 @@
 }
 
 #coplay.active {
-    width: 40em;
+    width: 43em;
 }
 
 #coplay.active #coplay-toggle {
@@ -120,11 +120,11 @@
   margin-left: .2em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* Uncomment for 3D effect */
   text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
 }
 
+.coplay-fullscreen:before { content: '\e800'; } /* '' */
+.coplay-exit-fullscreen:before { content: '\e801'; } /* '' */
 .coplay-sync:before { content: '\e809'; } /* '' */
 .coplay-play:before { content: '\e80a'; } /* '' */
 .coplay-pause:before { content: '\e80b'; } /* '' */
@@ -132,3 +132,25 @@
 .coplay-cancel:before { content: '\e80d'; } /* '' */
 .coplay-heart:before { content: '\e80e'; } /* '' */
 .coplay-plug:before { content: '\f1e6'; } /* '' */
+
+#coplay-fullscreen .coplay-exit-fullscreen,
+#coplay-fullscreen.active .coplay-fullscreen {
+    display: none;
+}
+
+#coplay-fullscreen.active .coplay-exit-fullscreen {
+    display: inline-block;
+}
+
+.coplay-fullscreen-container:fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+}
+.coplay-fullscreen-container:-webkit-full-screen {
+    width: 100vw !important;
+    height: 100vh !important;
+}
+.coplay-fullscreen-container:-moz-full-screen {
+    width: 100vw !important;
+    height: 100vh !important;
+}

@@ -1,8 +1,8 @@
 {
   "title": "Coplay",
   "name": "coplay",
-  "version": "0.1.2",
-  "description": "Synchronously play your videos in two browsers.",
+  "version": "0.2.0",
+  "description": "Synchronizing video play between two peers.",
   "main": "index.js",
   "author": "Jusineo",
   "preferences": [

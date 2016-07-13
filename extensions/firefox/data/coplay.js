@@ -44,6 +44,14 @@
         return elem.querySelectorAll(selector);
     }
 
+    function attr(elem, name, value) {
+        if (value !== undefined) {
+            elem.setAttribute(name, value);
+        } else {
+            return elem.getAttribute(name);
+        }
+    }
+
     function create(tagName, parent, props) {
         let elem = document.createElement(tagName);
         for (let prop in props) {
@@ -53,6 +61,56 @@
             parent.appendChild(elem);
         }
         return elem;
+    }
+
+    function getDefined(...args) {
+        return args.find(val => val !== undefined);
+    }
+
+    function on(elem, type, listener) {
+        let prefixes = ['', 'webkit', 'moz'];
+        let prefix = prefixes.find(prefix => elem['on' + prefix + type] !== undefined);
+        elem['on' + prefix + type] = listener;
+    }
+
+    function getFullscreenElement() {
+        return getDefined(
+            document.fullscreenElement,
+            document.webkitFullscreenElement,
+            document.mozFullScreenElement
+        );
+    }
+
+    function toggleFullscreen(elem) {
+        if (!elem) {
+            return false;
+        }
+
+        let fullscreenElement = getFullscreenElement();
+        if (typeof fullscreenElement === undefined) {
+            return false;
+        }
+
+        let main = coplay.ui.main;
+        if (fullscreenElement !== null) {
+            let exitFullscreen = getDefined(
+                document.exitFullscreen,
+                document.webkitExitFullscreen,
+                document.mozCancelFullScreen
+            );
+            document.body.appendChild(main);
+            exitFullscreen.call(document);
+            return false;
+        } else {
+            let requestFullscreen = getDefined(
+                elem.requestFullscreen,
+                elem.webkitRequestFullscreen,
+                elem.mozRequestFullScreen
+            );
+            requestFullscreen.call(elem);
+            elem.appendChild(main);
+            return true;
+        }
     }
 
     function pack(type, data) {
@@ -66,7 +124,6 @@
         return p;
     };
 
-
     /**
      * Player adaptor layer
      */
@@ -74,7 +131,9 @@
     playerAdaptor.youku = {
         prepare: function () {
             // just return true if ready
-            this._player = typeof PlayerPause !== 'undefined';
+            if (this._player = typeof PlayerPause !== 'undefined') {
+                this.setFullscreenContainer(get('player'));
+            }
         },
         play: function () {
             PlayerPause(false);
@@ -94,7 +153,9 @@
     };
     playerAdaptor.tudou = {
         prepare: function () {
-            this._player = get('tudouHomePlayer');
+            if (this._player = get('tudouHomePlayer')) {
+                this.setFullscreenContainer(query('#player .player_main'));
+            }
         },
         play: function () {
             this._player.notify('play');
@@ -126,6 +187,9 @@
             } else if (window.PLAYER) {
                 this._player = PLAYER;
             }
+            if (this._player) {
+                this.setFullscreenContainer(query('#mod_player .tenvideo_player'));
+            }
         },
         play: function () {
             this._player.play();
@@ -138,7 +202,7 @@
         },
         isStart: function () {
             if (window.tvp) {
-                return !this._player.isPlayingLoadingAd();
+                return true;
             } else if (window.PLAYER) {
                 return this._player.getPlayerState() !== -1;
             }
@@ -149,11 +213,18 @@
             } else if (window.PLAYER) {
                 return this._player.getCurrentTime();
             }
+        },
+        onfullscreenchange: function (isFullscreen) {
+            if (window.tvp) {
+                attr(this._player.getPlayer(), 'style', isFullscreen ? 'width: 100vw; height: 100vh;' : '');
+            }
         }
     };
     playerAdaptor.iqiyi = {
         prepare: function () {
-            this._player = get('flash');
+            if (this._player = get('flash')) {
+                this.setFullscreenContainer(get('flashbox'));
+            };
         },
         play: function () {
             this._player.resumeQiyiVideo();
@@ -169,11 +240,26 @@
         },
         getTime: function () {
             return JSON.parse(this._player.getQiyiPlayerInfo()).currentTime / 1000;
+        },
+        onfullscreenchange: function (isFullscreen) {
+            let box = this._fullscreenContainer;
+            if (isFullscreen) {
+                this._boxStyle = attr(box, 'style');
+                attr(box, 'style', this._boxStyle + ';width: 100vw; height: 100vh;');
+            } else {
+                attr(box, 'style', this._boxStyle);
+            }
         }
     };
     playerAdaptor.sohu = {
         prepare: function () {
-            this._player = get('player') || get('player_ob');
+            if (this._player = get('player') || get('player_ob')) {
+                let outer = get('sohuplayer');
+                let container = create('div', null);
+                outer.insertBefore(container, this._player.nextSibling);
+                container.appendChild(this._player);
+                this.setFullscreenContainer(container);
+            }
         },
         play: function () {
             this._player.playVideo();
@@ -182,18 +268,29 @@
             this._player.pauseVideo();
         },
         seek: function (sec) {
-            this._player.seekTo(sec);
+            // won't work for 0, so delay a little bit if needed
+            this._player.seekTo(Math.max(sec, 0.01));
         },
         isStart: function () {
             return true;
         },
         getTime: function () {
             return this._player.playedTime();
+        },
+        onfullscreenchange: function (isFullscreen) {
+            if (isFullscreen) {
+                this._playerStyle = attr(this._player, 'style');
+                attr(this._player, 'style', this._playerStyle + ';width: 100vw; height: 100vh;');
+            } else {
+                attr(this._player, 'style', this._playerStyle);
+            }
         }
     };
     playerAdaptor.youtube = {
         prepare: function () {
-            this._player = get('movie_player');
+            if (this._player = get('movie_player')) {
+                this.setFullscreenContainer(get('movie_player'));
+            }
         },
         play: function () {
             this._player.playVideo();
@@ -213,7 +310,9 @@
     };
     playerAdaptor.bilibili = {
         prepare: function () {
-            this._player = get('player_placeholder');
+            if (this._player = get('player_placeholder')) {
+                this.setFullscreenContainer(get('bofqi'));
+            }
         },
         play: function () {
             if (!this.isStart()) {
@@ -233,11 +332,21 @@
         },
         getTime: function () {
             return this._player.jwGetPosition();
+        },
+        onfullscreenchange: function (isFullscreen) {
+            if (isFullscreen) {
+                this._boxStyle = attr(this._player, 'style');
+                attr(this._player, 'style', this._boxStyle + ';width: calc(100vw + 298px); height: calc(100vh + 98px); margin-top: -50px;');
+            } else {
+                attr(this._player, 'style', this._boxStyle);
+            }
         }
     };
     playerAdaptor.le = {
         prepare: function () {
-            this._player = get('www_player_1');
+            if (this._player = get('www_player_1')) {
+                this.setFullscreenContainer(get('fla_box'));
+            }
         },
         play: function () {
             this._player.resumeVideo();
@@ -253,45 +362,97 @@
         },
         getTime: function () {
             return this._player.getVideoTime();
+        },
+        onfullscreenchange: function (isFullscreen) {
+            let box = this._fullscreenContainer.firstChild;
+            if (isFullscreen) {
+                this._boxStyle = attr(box, 'style');
+                attr(box, 'style', this._boxStyle + ';width: 100%; height: 100%;');
+            } else {
+                attr(box, 'style', this._boxStyle);
+            }
         }
     };
     playerAdaptor.vimeo = {
         prepare: function () {
             if (window.PlayerManager) {
-                this._player = PlayerManager.getPlayer(query('.video video'));
-                let s = create('style', document.body, {
-                    textContent: `
-                        #coplay.active #coplay-toggle {
-                            color: #${this._player.color} !important;
-                        }
-                        #coplay input:focus,
-                        #coplay button:not(:disabled):hover,
-                        #coplay.active #coplay-toggle:hover {
-                            color: #fff !important;
-                            background-color: #${this._player.color} !important;
-                        }`
-                });
+                if (this._player = this.getPlayer()) {
+                    let s = create('style', document.body, {
+                        textContent: `
+                            #coplay.active #coplay-toggle {
+                                color: #${this._player.color} !important;
+                            }
+                            #coplay input:focus,
+                            #coplay button:not(:disabled):hover,
+                            #coplay.active #coplay-toggle:hover {
+                                color: #fff !important;
+                                background-color: #${this._player.color} !important;
+                            }`
+                    });
+                    this.setFullscreenContainer(query('#player .player'));
+                }
             }
         },
         play: function () {
-            this._player.play();
+            this.getPlayer().play();
         },
         pause: function () {
-            this._player.pause();
+            this.getPlayer().pause();
         },
         seek: function (sec) {
-            this._player.currentTime = sec;
+            this.getPlayer().currentTime = sec;
         },
         isStart: function () {
-            return this._player.paused;
+            return this.getPlayer().paused;
         },
         getTime: function () {
-            return this._player.currentTime();
+            return this.getPlayer().currentTime();
+        },
+        getPlayer: function () {
+            return PlayerManager.getPlayer(query('.video video'));
+        },
+        toggleFullscreen: function () {
+            coplay.ui.fullscreen.classList.toggle('active');
+            this._fullscreenContainer.appendChild(coplay.ui.main);
+            this._isFullscreen = !this.isFullscreen;
+            query('#player .fullscreen').dispatchEvent(new MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            }));
+        }
+    };
+
+    let playerBase = {
+        trigger: function (type, ...args) {
+            if (typeof this['on' + type] === 'function') {
+                this['on' + type](...args);
+            }
+        },
+        setFullscreenContainer: function (elem) {
+            this._fullscreenContainer = elem;
+            elem.classList.add('coplay-fullscreen-container');
+            on(elem, 'fullscreenchange', () => {
+                if ((getFullscreenElement() === elem) !== this._isFullscreen) {
+                    this.resetFullscreen();
+                }
+            });
+            this.trigger('fullscreeninit');
+        },
+        resetFullscreen: function() {
+            coplay.ui.fullscreen.classList.remove('active');
+            document.body.appendChild(coplay.ui.main);
+            this.trigger('fullscreenchange', false);
+        },
+        toggleFullscreen: function () {
+            coplay.ui.fullscreen.classList.toggle('active');
+            this._isFullscreen = toggleFullscreen(this._fullscreenContainer);
+            this.trigger('fullscreenchange', this._isFullscreen);
         }
     };
 
     function initPlayer(done) {
-        let player = playerAdaptor[host];
+        let player = Object.assign({}, playerBase, playerAdaptor[host]);
 
         (function prepare() {
             player.prepare();
@@ -409,6 +570,15 @@
             return false;
         };
 
+        let fullscreen = create('button', main, {
+            id: getId('fullscreen'),
+            innerHTML: '<span class="coplay-fullscreen"></span><span class="coplay-exit-fullscreen"></span>',
+            title: 'Toggle fullscreen'
+        });
+        fullscreen.onclick = function () {
+            coplay.player.toggleFullscreen();
+        };
+
         coplay.ui = {
             main: main,
             local: local,
@@ -419,7 +589,8 @@
             play: play,
             pause: pause,
             sync: sync,
-            restart: restart
+            restart: restart,
+            fullscreen: fullscreen
         };
 
         // enable after ad stops
@@ -436,10 +607,10 @@
     }
 
     coplay.remote = {
-        send: function () {
+        send: function (...args) {
             let c = coplay.connection;
             if (c) {
-                c.send.apply(c, arguments);
+                c.send.apply(c, args);
             }
         }
     }
