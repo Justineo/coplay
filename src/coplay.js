@@ -897,9 +897,6 @@
     };
 
     function getUserMedia(...args) {
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            return navigator.mediaDevices.getUserMedia(...args);
-        }
         let method = getDefined(
             navigator.getUserMedia,
             navigator.webkitGetUserMedia,
