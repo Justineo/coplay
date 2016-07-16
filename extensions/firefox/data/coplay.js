@@ -615,7 +615,8 @@
             let call = create('button', main, {
                 id: getId('call'),
                 innerHTML: '<span class="coplay-call"></span>',
-                title: 'Start video call'
+                title: 'Start video call',
+                disabled: true
             });
             call.onclick = function () {
                 coplay.call(coplay.ui.remote.value);
@@ -760,7 +761,10 @@
             ui.remoteVideo.hidden = true;
             ui.call.hidden = false;
             ui.hangUp.hidden = true;
-        })
+            if (coplay.stream) {
+                coplay.stream.getTracks().forEach(track => track.stop());
+            }
+        });
     }
 
     function connect(c) {
@@ -837,6 +841,7 @@
             ui.remote.disabled = false;
             ui.connect.hidden = false;
             ui.disconnect.hidden = true;
+            ui.call.disabled = true;
             coplay.connection = null;
         });
     }
@@ -886,6 +891,7 @@
         if (c) {
             c.close();
         }
+        coplay.hangUp();
     };
 
     function getUserMedia(...args) {
@@ -949,9 +955,6 @@
     coplay.hangUp = function () {
         if (coplay.media) {
             coplay.media.close();
-        }
-        if (coplay.stream) {
-            coplay.stream.getTracks().forEach(track => track.stop());
         }
     };
 

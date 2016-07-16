@@ -157,6 +157,14 @@
     height: 100vh !important;
 }
 
+@keyframes shift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 64px 0;
+  }
+}
 #coplay-local-video,
 #coplay-remote-video {
     position: fixed;
@@ -166,8 +174,11 @@
     border-radius: 3px;
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 0 3px #000;
+    background-image: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) 25%, rgba(255, 255, 255, 0.4) 25%, rgba(255, 255, 255, 0.4) 50%);
+    background-size: 64px 64px;
+    background-clip: padding-box;
+    animation: shift 2s linear infinite;
 }
-
 #coplay-local-video {
     right: 340px;
     width: 160px;
