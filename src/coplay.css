@@ -1,16 +1,17 @@
 #coplay {
     position: fixed;
     left: 2em;
-    bottom: 0;
+    bottom: 1em;
     width: 3em;
     height: 3em;
     z-index: 2147483647; /* max integer */
+    overflow: hidden;
+    border-radius: 3px;
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 0 3px #000;
-    border-bottom: none;
     background-color: rgba(0, 0, 0, 0.75);
     background-clip: padding-box;
-    transition: width 0.5s;
+    transition: cubic-bezier(0.24, 0.2, 1, 0.25) 0.3s;
     font-size: 12px;
     box-sizing: content-box;
 }
@@ -125,6 +126,7 @@
 
 .coplay-fullscreen:before { content: '\e800'; } /* '' */
 .coplay-exit-fullscreen:before { content: '\e801'; } /* '' */
+.coplay-call:before { content: '\e802'; } /* '' */
 .coplay-sync:before { content: '\e809'; } /* '' */
 .coplay-play:before { content: '\e80a'; } /* '' */
 .coplay-pause:before { content: '\e80b'; } /* '' */
@@ -153,4 +155,26 @@
 .coplay-fullscreen-container:-moz-full-screen {
     width: 100vw !important;
     height: 100vh !important;
+}
+
+#coplay-local-video,
+#coplay-remote-video {
+    position: fixed;
+    top: 10px;
+    z-index: 2147483647;
+    transform: rotateY(180deg);
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 3px #000;
+}
+
+#coplay-local-video {
+    right: 340px;
+    width: 160px;
+    height: 120px;
+}
+#coplay-remote-video {
+    right: 10px;
+    width: 320px;
+    height: 240px;
 }

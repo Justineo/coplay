@@ -45,8 +45,10 @@
         return;
     } else {
         data('coplay', true);
-        loadScript(url('peer.js'), function () {
-            loadScript(url('coplay.js'));
+        loadScript(url('peer.js'), () => {
+            loadScript(url('drag.js'), () => {
+                loadScript(url('coplay.js'));
+            });
         });
     }
 })();

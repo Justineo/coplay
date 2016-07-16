@@ -1,3 +1,7 @@
+0.3.0
+* Added video chat for HTTPS sites!
+* Control bar is now draggable to prevent overlapping those of original players.
+
 0.2.0
 * Supported fullscreen mode.
 * Used source code version of `peer.js`.

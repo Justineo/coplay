@@ -477,13 +477,28 @@
             className: coplayOptions.autoActivate ? 'active' : ''
         });
 
+        const DRAGGING_CLASS = 'coplay-dragging';
         let toggle = create('button', main, {
             id: getId('toggle'),
-            innerHTML: '<span class="coplay-heart"></span>'
+            innerHTML: '<span class="coplay-heart"></span>',
+            title: 'Click to toggle, drag to move the control bar'
         });
         toggle.onclick = function () {
-            main.classList.toggle('active');
+            if (!main.classList.contains(DRAGGING_CLASS)) {
+                main.classList.toggle('active');
+            }
         };
+        drag(main, {
+            handle: toggle,
+            ondragstart: function () {
+                this.target.classList.add(DRAGGING_CLASS);
+            },
+            ondragend: function () {
+                setTimeout(() => {
+                    this.target.classList.remove(DRAGGING_CLASS);
+                }, 0);
+            }
+        });
 
         let local = create('input', main, {
             id: getId('local'),
@@ -580,18 +595,48 @@
         };
 
         coplay.ui = {
-            main: main,
-            local: local,
-            remote: remote,
-            connect: connect,
-            disconnect: disconnect,
-            toggle: toggle,
-            play: play,
-            pause: pause,
-            sync: sync,
-            restart: restart,
-            fullscreen: fullscreen
+            main,
+            local,
+            remote,
+            connect,
+            disconnect,
+            toggle,
+            play,
+            pause,
+            sync,
+            restart,
+            fullscreen
         };
+
+        if (location.protocol === 'https:') {
+            let call = create('button', main, {
+                id: getId('call'),
+                innerHTML: '<span class="coplay-call"></span>',
+                title: 'Start video call'
+            });
+            call.onclick = function () {
+                coplay.call(coplay.ui.remote.value);
+            };
+            coplay.ui.call = call;
+
+            let hangUp = create('button', main, {
+                id: getId('hang-up'),
+                innerHTML: '<span class="coplay-cancel"></span>',
+                hidden: true,
+                title: 'End video call'
+            });
+            hangUp.onclick = function () {
+                coplay.hangUp();
+            };
+            coplay.ui.hangUp = hangUp;
+
+            create('style', document.body, {
+                textContent: `
+                    #coplay.active {
+                        width: 46em !important;
+                    }`
+            });
+        }
 
         // enable after ad stops
         if (!coplay.player.isStart()) {
@@ -613,7 +658,7 @@
                 c.send.apply(c, args);
             }
         }
-    }
+    };
 
     function parseURL(url) {
         let a = create('a', null, {
@@ -687,7 +732,32 @@
 
         peer.on('connection', connect);
 
+        peer.on('call', call);
+
         coplay.peer = peer;
+    }
+
+    function call(media) {
+        prepareMedia(media);
+        coplay.call(media);
+    }
+
+    function prepareMedia(media) {
+        coplay.media = media;
+        let ui = coplay.ui;
+        media.on('stream', stream => {
+            ui.remoteVideo.src = window.URL.createObjectURL(stream);
+            ui.localVideo.hidden = false;
+            ui.remoteVideo.hidden = false;
+            ui.call.hidden = true;
+            ui.hangUp.hidden = false;
+        });
+        media.on('close', () => {
+            ui.localVideo.hidden = true;
+            ui.remoteVideo.hidden = true;
+            ui.call.hidden = false;
+            ui.hangUp.hidden = true;
+        })
     }
 
     function connect(c) {
@@ -698,6 +768,7 @@
         ui.remote.disabled = true;
         ui.connect.hidden = true;
         ui.disconnect.hidden = false;
+        ui.call.disabled = false;
 
         let start = 0;
         let elapsed = 0;
@@ -719,7 +790,6 @@
 
         c.on('data', function (p) {
             let player = coplay.player;
-            console.log(p);
             switch (p.type) {
                 case 'REQ':
                     c.send(pack('ACK'));
@@ -728,7 +798,6 @@
                     round = Date.now() - start;
                     count++;
                     elapsed += round;
-                    console.log(round + 'ms');
                     setTimeout(function () {
                         heartBeat(c);
                     }, 1000);
@@ -738,7 +807,7 @@
                     break;
                 case 'PATH':
                     if (p.data !== getPath()) {
-                        console.log('Not on the same page.');
+                        console.error('Not on the same page.');
                         c.close();
                     }
                     break;
@@ -785,6 +854,7 @@
         ui.pause.disabled = isDisabled;
         ui.sync.disabled = isDisabled;
         ui.restart.disabled = isDisabled;
+        ui.fullscreen.disabled = isDisabled;
     };
 
     coplay.enable = function () {
@@ -812,6 +882,70 @@
         let c = coplay.connection;
         if (c) {
             c.close();
+        }
+    };
+
+    function getUserMedia(...args) {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            return navigator.mediaDevices.getUserMedia(...args);
+        }
+        let method = getDefined(
+            navigator.getUserMedia,
+            navigator.webkitGetUserMedia,
+            navigator.mozGetUserMedia
+        );
+        if (!method) {
+            return null;
+        }
+
+        return method.apply(navigator, args);
+    }
+
+    function initVideoCallPlayers() {
+        if (coplay.ui.localVideo) {
+            return;
+        }
+        let remoteVideo = create('video', coplay.ui.main, {
+            id: 'coplay-remote-video',
+            autoplay: true
+        });
+        let localVideo = create('video', coplay.ui.main, {
+            id: 'coplay-local-video',
+            autoplay: true
+        });
+        drag(remoteVideo);
+        drag(localVideo);
+        Object.assign(coplay.ui, { remoteVideo, localVideo });
+        on(document, 'fullscreenchange', function () {
+            if (remoteVideo.src) {
+                remoteVideo.play();
+            }
+            if (localVideo.src) {
+                localVideo.play();
+            }
+        });
+    }
+
+    coplay.call = function (remote) {
+        getUserMedia({
+            video: true,
+            audio: true
+        }, stream => {
+            initVideoCallPlayers();
+            coplay.ui.localVideo.src = window.URL.createObjectURL(stream);
+            if (typeof remote === 'string') { // peer id
+                let media = coplay.peer.call(remote, stream);
+                prepareMedia(media);
+            } else { // MediaConnection
+                remote.answer(stream);
+            }
+        }, err => console.error)
+    };
+
+    coplay.hangUp = function () {
+        let m = coplay.media;
+        if (m) {
+            coplay.media.close();
         }
     };
 
