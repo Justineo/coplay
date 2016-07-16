@@ -922,7 +922,8 @@
         });
         let localVideo = create('video', document.body, {
             id: 'coplay-local-video',
-            autoplay: true
+            autoplay: true,
+            muted: true
         });
         drag(remoteVideo);
         drag(localVideo);

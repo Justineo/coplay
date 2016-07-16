@@ -1,3 +1,6 @@
+0.3.1
+* Muted local video player while video chatting.
+
 0.3.0
 * Added video chat for HTTPS sites!
 * Control bar is now draggable to prevent overlapping those of original players.

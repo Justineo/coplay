@@ -761,8 +761,10 @@
             ui.remoteVideo.hidden = true;
             ui.call.hidden = false;
             ui.hangUp.hidden = true;
+            coplay.media = null;
             if (coplay.stream) {
                 coplay.stream.getTracks().forEach(track => track.stop());
+                coplay.stream = null;
             }
         });
     }
@@ -920,7 +922,8 @@
         });
         let localVideo = create('video', document.body, {
             id: 'coplay-local-video',
-            autoplay: true
+            autoplay: true,
+            muted: true
         });
         drag(remoteVideo);
         drag(localVideo);
