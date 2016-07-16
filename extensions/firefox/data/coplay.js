@@ -91,14 +91,16 @@
             return false;
         }
 
-        let main = coplay.ui.main;
+        let ui = coplay.ui;
         if (fullscreenElement !== null) {
             let exitFullscreen = getDefined(
                 document.exitFullscreen,
                 document.webkitExitFullscreen,
                 document.mozCancelFullScreen
             );
-            document.body.appendChild(main);
+            document.body.appendChild(ui.main);
+            document.body.appendChild(ui.remoteVideo);
+            document.body.appendChild(ui.localVideo);
             exitFullscreen.call(document);
             return false;
         } else {
@@ -108,7 +110,9 @@
                 elem.mozRequestFullScreen
             );
             requestFullscreen.call(elem);
-            elem.appendChild(main);
+            elem.appendChild(ui.main);
+            elem.appendChild(ui.remoteVideo);
+            elem.appendChild(ui.localVideo);
             return true;
         }
     }
@@ -904,11 +908,11 @@
         if (coplay.ui.localVideo) {
             return;
         }
-        let remoteVideo = create('video', coplay.ui.main, {
+        let remoteVideo = create('video', document.body, {
             id: 'coplay-remote-video',
             autoplay: true
         });
-        let localVideo = create('video', coplay.ui.main, {
+        let localVideo = create('video', document.body, {
             id: 'coplay-local-video',
             autoplay: true
         });
@@ -930,6 +934,7 @@
             video: true,
             audio: true
         }, stream => {
+            coplay.stream = stream;
             initVideoCallPlayers();
             coplay.ui.localVideo.src = window.URL.createObjectURL(stream);
             if (typeof remote === 'string') { // peer id
@@ -942,9 +947,14 @@
     };
 
     coplay.hangUp = function () {
-        let m = coplay.media;
-        if (m) {
+        if (coplay.media) {
             coplay.media.close();
+        }
+        if (coplay.stream) {
+            [].concat(
+                coplay.stream.getAudioTracks(),
+                coplay.stream.getVideoTracks()
+            ).forEach(track => track.stop());
         }
     };
 
