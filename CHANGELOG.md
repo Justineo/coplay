@@ -1,3 +1,7 @@
+0.3.2
+* No mirror image for remote video.
+* Fixed the problem that video calls cannot be initiated from Firefox.
+
 0.3.1
 * Muted local video player while video chatting.
 
