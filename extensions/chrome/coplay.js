@@ -268,8 +268,7 @@
             this._player.pauseVideo();
         },
         seek: function (sec) {
-            // won't work for 0, so delay a little bit if needed
-            this._player.seekTo(Math.max(sec, 0.01));
+            this._player.seekTo(sec);
         },
         isStart: function () {
             return true;
@@ -579,7 +578,7 @@
             if (coplay.player.restart) {
                 coplay.player.restart();
             } else {
-                coplay.player.seek(0);
+                coplay.player.seek(0.001);
             }
             coplay.remote.send(pack('SEEK', 0));
             return false;
