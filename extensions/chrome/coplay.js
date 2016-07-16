@@ -951,10 +951,7 @@
             coplay.media.close();
         }
         if (coplay.stream) {
-            [].concat(
-                coplay.stream.getAudioTracks(),
-                coplay.stream.getVideoTracks()
-            ).forEach(track => track.stop());
+            coplay.stream.getTracks().forEach(track => track.stop());
         }
     };
 
