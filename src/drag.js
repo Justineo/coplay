@@ -2,7 +2,7 @@
  * @file drag.js
  * @author Justineo(justice360@gmail.com)
  */
-(function (define) {
+(function () {
     var events = {};
 
     var vendorProps = {
@@ -427,29 +427,5 @@
     };
 
     // Everything is ready, export the whole module
-    define('drag', function (require, exports, module) {
-        module.exports = drag;
-    });
-
-}(typeof define === 'function' && define.amd ? define : function (id, factory) {
-
-    // Define it the UMD way
-    if (typeof exports !== 'undefined') {
-        factory(require, exports, module);
-    } else {
-        var mod = {};
-        var exp = {};
-
-        factory(function (value) {
-            return window[value];
-        }, exp, mod);
-
-        if (mod.exports) {
-            // Defining output using `module.exports`
-            window[id] = mod.exports;
-        } else {
-            // Defining output using `exports.*`
-            window[id] = exp;
-        }
-    }
-}));
+    window.coplayDrag = drag;
+})();

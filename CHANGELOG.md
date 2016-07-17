@@ -1,3 +1,7 @@
+0.3.3
+* Fixed Youku player adaption for specific pages.
+* Removed UMD support for `drag.js` to simplify usage in Coplay.
+
 0.3.2
 * No mirror image for remote video.
 * Fixed the problem that video calls cannot be initiated from Firefox.

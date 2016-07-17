@@ -139,24 +139,27 @@
     playerAdaptor.youku = {
         prepare: function () {
             // just return true if ready
-            if (this._player = typeof PlayerPause !== 'undefined') {
+            if (this._player = get('movie_player')) {
                 this.setFullscreenContainer(get('player'));
             }
         },
         play: function () {
-            PlayerPause(false);
+            this._player.pauseVideo(false);
         },
         pause: function () {
-            PlayerPause(true);
+            this._player.pauseVideo(true);
         },
         seek: function (sec) {
-            PlayerSeek(sec);
+            this._player.nsseek(sec);
         },
         isStart: function () {
-            return playerStart;
+            if (window.playerStart !== undefined) {
+                return playerStart;
+            }
+            return true;
         },
         getTime: function () {
-            return PlayerInfo().time;
+            return this._player.getNsData().time;
         }
     };
     playerAdaptor.tudou = {
@@ -495,7 +498,7 @@
                 main.classList.toggle('active');
             }
         };
-        drag(main, {
+        coplayDrag(main, {
             handle: toggle,
             ondragstart: function () {
                 this.target.classList.add(DRAGGING_CLASS);
@@ -926,8 +929,8 @@
             autoplay: true,
             muted: true
         });
-        drag(remoteVideo);
-        drag(localVideo);
+        coplayDrag(remoteVideo);
+        coplayDrag(localVideo);
         Object.assign(coplay.ui, { remoteVideo, localVideo });
         on(document, 'fullscreenchange', function () {
             if (remoteVideo.src) {
