@@ -21,11 +21,11 @@ let urlOptions = {
   'run.js': self.data.url('./run.js'),
   'peer.js': self.data.url('./peer.js'),
   'drag.js': self.data.url('./drag.js'),
-  'coplay.js': self.data.url('./coplay.js')
+  'coplay.js': self.data.url('./coplay.js'),
+  'coplay.css': self.data.url('./coplay.css')
 };
 let contentScriptConfig = {
-  contentScriptFile: self.data.url('./inject.js'),
-  contentStyleFile: self.data.url('./coplay.css')
+  contentScriptFile: self.data.url('./inject.js')
 };
 
 function getCoplayOptions() {
@@ -70,6 +70,7 @@ let button = buttons.ActionButton({
   onClick: () => {
     tabs.activeTab.attach(Object.assign({}, contentScriptConfig, {
       contentScriptOptions: {
+        url: urlOptions,
         coplayOptions: getCoplayOptions()
       }
     }));

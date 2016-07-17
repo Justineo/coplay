@@ -41,6 +41,10 @@
     line-height: 3em;
     outline: none;
 }
+#coplay button::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
 
 #coplay input {
     width: 11em;

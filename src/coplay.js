@@ -99,8 +99,10 @@
                 document.mozCancelFullScreen
             );
             document.body.appendChild(ui.main);
-            document.body.appendChild(ui.remoteVideo);
-            document.body.appendChild(ui.localVideo);
+            if (ui.remoteVideo) {
+                document.body.appendChild(ui.remoteVideo);
+                document.body.appendChild(ui.localVideo);
+            }
             exitFullscreen.call(document);
             return false;
         } else {
@@ -111,8 +113,10 @@
             );
             requestFullscreen.call(elem);
             elem.appendChild(ui.main);
-            elem.appendChild(ui.remoteVideo);
-            elem.appendChild(ui.localVideo);
+            if (ui.remoteVideo){
+                elem.appendChild(ui.remoteVideo);
+                elem.appendChild(ui.localVideo);
+            }
             return true;
         }
     }
@@ -435,7 +439,7 @@
         setFullscreenContainer: function (elem) {
             this._fullscreenContainer = elem;
             elem.classList.add('coplay-fullscreen-container');
-            on(elem, 'fullscreenchange', () => {
+            on(document, 'fullscreenchange', () => {
                 if ((getFullscreenElement() === elem) !== this._isFullscreen) {
                     this.resetFullscreen();
                 }

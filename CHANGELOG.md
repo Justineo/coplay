@@ -1,6 +1,9 @@
 0.3.2
 * No mirror image for remote video.
 * Fixed the problem that video calls cannot be initiated from Firefox.
+* Fixed the problem that `fullscreenchange` event does not trigger on Firefox.
+* Fixed regression introduced by video chat.
+* Fixed the problem that browser action cannot activate Coplay on Firefox.
 
 0.3.1
 * Muted local video player while video chatting.
