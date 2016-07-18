@@ -214,7 +214,7 @@
         isStart: function () {
             if (window.tvp) {
                 return true;
-            } else if (window.PLAYER) {
+            } else if (window.PLAYER && this._player.getPlayerState) {
                 return this._player.getPlayerState() !== -1;
             }
         },
@@ -338,7 +338,10 @@
             this._player.jwSeek(sec)
         },
         isStart: function () {
-            return this._player.jwGetState() === 'PLAYING';
+            if (this._player.jwGetState) {
+                return this._player.jwGetState() === 'PLAYING';
+            }
+            return false;
         },
         getTime: function () {
             return this._player.jwGetPosition();
@@ -784,7 +787,10 @@
         ui.remote.disabled = true;
         ui.connect.hidden = true;
         ui.disconnect.hidden = false;
-        ui.call.disabled = false;
+
+        if (ui.call) {
+            ui.call.disabled = false;
+        }
 
         let start = 0;
         let elapsed = 0;
@@ -850,7 +856,11 @@
             ui.remote.disabled = false;
             ui.connect.hidden = false;
             ui.disconnect.hidden = true;
-            ui.call.disabled = true;
+
+            if (ui.call) {
+                ui.call.disabled = true;
+            }
+
             coplay.connection = null;
         });
     }

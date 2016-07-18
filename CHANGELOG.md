@@ -1,3 +1,7 @@
+0.3.4
+* Hot fix for connection failure on HTTP sites because of null exception.
+* Fixed occasional failure on Bilibili.
+
 0.3.3
 * Fixed Youku player adaption for specific pages.
 * Removed UMD support for `drag.js` to simplify usage in Coplay.

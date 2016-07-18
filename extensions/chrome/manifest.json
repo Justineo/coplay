@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Coplay",
   "description": "Synchronizing video play between two peers.",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "icons": {
     "128": "coplay.png"
   },
