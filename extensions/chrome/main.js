@@ -4,8 +4,7 @@ function inject() {
     if (chrome.runtime.lastError) {
         console.error(chrome.runtime.lastError.message);
     }
-    chrome.tabs.executeScript(null, { file: 'inject.js' });
-    chrome.tabs.insertCSS(null, { file: 'coplay.css' });
+    chrome.tabs.executeScript(null, { file: 'inject.js', allFrames: true });
     console.log('Injector executed.');
 }
 

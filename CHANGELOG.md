@@ -1,3 +1,6 @@
+0.3.5
+* Fixed iframe players for Tencent Video.
+
 0.3.4
 * Hot fix for connection failure on HTTP sites because of null exception.
 * Fixed occasional failure on Bilibili.

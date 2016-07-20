@@ -2,6 +2,13 @@
     'use strict';
 
     /**
+     * Don't activate inside iframes
+     */
+    if (window !== top) {
+        return;
+    }
+
+    /**
      * coplay
      * Synchronizing video play between two peers
      */
@@ -73,20 +80,21 @@
         elem['on' + prefix + type] = listener;
     }
 
-    function getFullscreenElement() {
+    function getFullscreenElement(doc) {
+        doc = doc || document;
         return getDefined(
-            document.fullscreenElement,
-            document.webkitFullscreenElement,
-            document.mozFullScreenElement
+            doc.fullscreenElement,
+            doc.webkitFullscreenElement,
+            doc.mozFullScreenElement
         );
     }
 
-    function toggleFullscreen(elem) {
+    function toggleFullscreen(elem, doc) {
         if (!elem) {
             return false;
         }
 
-        let fullscreenElement = getFullscreenElement();
+        let fullscreenElement = getFullscreenElement(doc);
         if (typeof fullscreenElement === undefined) {
             return false;
         }
@@ -192,14 +200,33 @@
     };
     playerAdaptor.qq = {
         prepare: function () {
-            if (window.tvp) {
-                let instances = tvp.Player.instance;
-                this._player = instances[Object.keys(instances)[0]];
-            } else if (window.PLAYER) {
-                this._player = PLAYER;
+            let me = this;
+            this._isTvp = true;
+            this._doc = document;
+            function getPlayer(global) {
+                let player;
+                if (global.PLAYER) {
+                    player = global.PLAYER;
+                    me._isTvp = false;
+                } else if (global.tvp) {
+                    let instances = tvp.Player.instance;
+                    player = instances[Object.keys(instances)[0]];
+                    if (!player) {
+                        let frame = get('player_area');
+                        if (frame && frame.contentWindow) {
+                            player = getPlayer(frame.contentWindow);
+                            if (player) {
+                                me._doc = frame.contentWindow.document;
+                            }
+                        }
+                    }
+                }
+                return player;
             }
+
+            this._player = getPlayer(window);
             if (this._player) {
-                this.setFullscreenContainer(query('#mod_player .tenvideo_player'));
+                this.setFullscreenContainer(this._doc.querySelector('#mod_player .tenvideo_player'));
             }
         },
         play: function () {
@@ -212,21 +239,21 @@
             this._player.seekTo(sec);
         },
         isStart: function () {
-            if (window.tvp) {
+            if (this._isTvp) {
                 return true;
-            } else if (window.PLAYER && this._player.getPlayerState) {
+            } else if (this._player.getPlayerState) {
                 return this._player.getPlayerState() !== -1;
             }
         },
         getTime: function () {
-            if (window.tvp) {
+            if (this._isTvp) {
                 return this._player.getCurTime();
             } else if (window.PLAYER) {
                 return this._player.getCurrentTime();
             }
         },
         onfullscreenchange: function (isFullscreen) {
-            if (window.tvp) {
+            if (this._isTvp) {
                 attr(this._player.getPlayer(), 'style', isFullscreen ? 'width: 100vw; height: 100vh;' : '');
             }
         }
@@ -446,7 +473,7 @@
             this._fullscreenContainer = elem;
             elem.classList.add('coplay-fullscreen-container');
             on(document, 'fullscreenchange', () => {
-                if ((getFullscreenElement() === elem) !== this._isFullscreen) {
+                if ((getFullscreenElement(this._doc) === elem) !== this._isFullscreen) {
                     this.resetFullscreen();
                 }
             });
@@ -459,7 +486,7 @@
         },
         toggleFullscreen: function () {
             coplay.ui.fullscreen.classList.toggle('active');
-            this._isFullscreen = toggleFullscreen(this._fullscreenContainer);
+            this._isFullscreen = toggleFullscreen(this._fullscreenContainer, this._doc);
             this.trigger('fullscreenchange', this._isFullscreen);
         }
     };

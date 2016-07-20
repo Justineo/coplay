@@ -8,7 +8,7 @@ When two browsers are playing the same web video, Coplay can connect them with W
 
 Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi, YouTube bilibili, LETV and Vimeo.
 
-Buttons on control bar stands for "connect"/"disconnect", "play", "pause", "sync" and "restart".
+Buttons on control bar stands for "connect", "play", "pause", "sync", "restart", "fullscreen" and "video chat".
 
 ## Installation
 

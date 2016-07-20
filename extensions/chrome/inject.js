@@ -18,6 +18,14 @@
         document.getElementsByTagName('head')[0].appendChild(elem);
     }
 
+    function loadStyle(url) {
+        var elem = document.createElement('link');
+        elem.rel = 'stylesheet';
+        elem.type = 'text/css';
+        elem.href = url;
+        document.getElementsByTagName('head')[0].appendChild(elem);
+    }
+
     function url(file) {
         return chrome.extension.getURL(file);
     }
@@ -47,6 +55,7 @@
             return;
         } else {
             data('coplay', true);
+            loadStyle(url('coplay.css'));
             loadScript(url('peer.js'), () => {
                 loadScript(url('drag.js'), () => {
                     loadScript(url('coplay.js'));

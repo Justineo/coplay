@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Coplay",
   "description": "Synchronizing video play between two peers.",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "icons": {
     "128": "coplay.png"
   },
@@ -34,6 +34,7 @@
     "peer.js",
     "drag.js",
     "coplay.js",
+    "coplay.css",
     "coplay.woff",
     "run.js"
   ],
