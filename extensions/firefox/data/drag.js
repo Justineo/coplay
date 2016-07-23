@@ -248,6 +248,13 @@
                     off(elem, type, listeners[type][i]);
                 }
                 delete listeners[type];
+            } else {
+                for (var i = 0, j = listeners[type].length; i < j; i++) {
+                    if (listeners[type][i] === listener) {
+                        off(elem, type, listener);
+                        listeners[type][i] = null;
+                    }
+                }
             }
         }
     };
@@ -270,6 +277,7 @@
 
         this.id = util.guid();
         attr(target, ID_KEY, this.id);
+        attr(this.handle, ID_KEY, this.id);
 
         // save current style attribute to recover later
         this.oldStyle = getCSSText(target);
@@ -278,7 +286,26 @@
         target.style.cursor = 'default';
 
         this.handle = this.handle || target;
-        util.on(this.handle, 'mousedown', bind(start, this));
+
+        var startHandler = bind(start, this);
+        this.__startHandler__ = startHandler;
+        util.on(this.handle, 'mousedown', startHandler);
+    };
+
+    Draggable.prototype.pause = function () {
+        if (this.__isPaused__) {
+            return;
+        }
+        this.__isPaused__ = true;
+        util.off(this.handle, 'mousedown', this.__startHandler__);
+    };
+
+    Draggable.prototype.resume = function () {
+        if (!this.__isPaused__) {
+            return;
+        }
+        this.__isPaused__ = false;
+        util.on(this.handle, 'mousedown', this.__startHandler__);
     };
 
     Draggable.prototype.dispose = function () {
@@ -344,7 +371,8 @@
         if (transitionAccessor) {
             var oldTransition = this.target.style[transitionAccessor];
             this.oldTransition = oldTransition;
-            this.target.style[transitionAccessor] = 'none';
+            var transition = getComputed(this.target, transitionAccessor);
+            this.target.style[transitionAccessor] = (transition ? (transition + ',') : '') + 'transform 0s';
         }
 
         util.on(doc, 'mousemove', bind(track, this));

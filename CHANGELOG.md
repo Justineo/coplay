@@ -1,4 +1,5 @@
-0.3.5
+0.4.0
+* Added AcFun support.
 * Fixed iframe players for Tencent Video.
 
 0.3.4

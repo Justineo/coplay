@@ -24,11 +24,11 @@
     }
 
     // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube
-    let host = location.host.match(/(?:^|\.)(youku|sohu|tudou|qq|iqiyi|youtube|bilibili|le|vimeo)\.com/i);
+    let host = location.host.match(/(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.tv|bilibili\.com|le\.com|vimeo\.com)(?:\/|$)/i);
     if (!host) {
         return;
     }
-    host = host[1];
+    host = host[1].split('.')[0];
 
     /**
      * Common utilis
@@ -72,6 +72,13 @@
 
     function getDefined(...args) {
         return args.find(val => val !== undefined);
+    }
+
+    function pick(obj, ...props) {
+        return props.reduce((result, current) => {
+            result[current] = obj[current];
+            return result;
+        }, {});
     }
 
     function on(elem, type, listener) {
@@ -256,6 +263,9 @@
             if (this._isTvp) {
                 attr(this._player.getPlayer(), 'style', isFullscreen ? 'width: 100vw; height: 100vh;' : '');
             }
+            if (mainDrag) {
+                mainDrag[isFullscreen ? 'pause' : 'resume']();
+            }
         }
     };
     playerAdaptor.iqiyi = {
@@ -345,6 +355,44 @@
             return this._player.getCurrentTime();
         }
     };
+    playerAdaptor.acfun = {
+        prepare: function () {
+            let player = get('ACFlashPlayer-re');
+            if (player && player.tagName === 'IFRAME') {
+                player = player.contentDocument.getElementById('ACFlashPlayer-re');
+            } else {
+                // Youku Player inside
+                Object.assign(this, pick(playerAdaptor.youku, 'play', 'pause', 'seek', 'isStart', 'getTime'))
+            }
+            if (this._player = player) {
+                this.setFullscreenContainer(get('area-player'));
+            }
+        },
+        play: function () {
+            this._player.play({ action: 'play' });
+        },
+        pause: function () {
+            this._player.play({ action: 'pause' });
+        },
+        seek: function (sec) {
+            this._player.play({ action: 'jump,' + sec });
+        },
+        isStart: function () {
+            return true;
+        },
+        getTime: function () {
+            return this._player.getTime();
+        },
+        onfullscreenchange: function (isFullscreen) {
+            let box = get('ACFlashPlayer-re');
+            if (isFullscreen) {
+                this._boxStyle = attr(box, 'style');
+                attr(box, 'style', this._boxStyle + ';width: 100%; height: 100%;');
+            } else {
+                attr(box, 'style', this._boxStyle);
+            }
+        }
+    },
     playerAdaptor.bilibili = {
         prepare: function () {
             if (this._player = get('player_placeholder')) {
@@ -507,6 +555,7 @@
         })();
     }
 
+    let mainDrag;
 
     /**
      * coplay UI
@@ -528,7 +577,7 @@
                 main.classList.toggle('active');
             }
         };
-        coplayDrag(main, {
+        mainDrag = coplayDrag(main, {
             handle: toggle,
             ondragstart: function () {
                 this.target.classList.add(DRAGGING_CLASS);
@@ -920,7 +969,6 @@
     };
 
     coplay.connect = function (remote) {
-
         let c = coplay.peer.connect(remote, {
             label: 'coplay',
             serialization: 'json',

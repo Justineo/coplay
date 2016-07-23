@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Coplay",
   "description": "Synchronizing video play between two peers.",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "icons": {
     "128": "coplay.png"
   },
@@ -19,6 +19,8 @@
     "https://*.iqiyi.com/*",
     "http://*.youtube.com/*",
     "https://*.youtube.com/*",
+    "http://*.acfun.tv/*",
+    "https://*.acfun.tv/*",
     "http://*.bilibili.com/*",
     "https://*.bilibili.com/*",
     "http://*.le.com/*",
@@ -35,8 +37,7 @@
     "drag.js",
     "coplay.js",
     "coplay.css",
-    "coplay.woff",
-    "run.js"
+    "coplay.woff"
   ],
   "browser_action": {
     "default_icon": {

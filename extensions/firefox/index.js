@@ -12,13 +12,13 @@ const DOMAINS = [
     'qq.com',
     'iqiyi.com',
     'youtube.com',
+    'acfun.tv',
     'bilibili.com',
     'le.com',
     'vimeo.com'
 ];
 
 let urlOptions = {
-  'run.js': self.data.url('./run.js'),
   'peer.js': self.data.url('./peer.js'),
   'drag.js': self.data.url('./drag.js'),
   'coplay.js': self.data.url('./coplay.js'),

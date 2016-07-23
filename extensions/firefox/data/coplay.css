@@ -11,7 +11,7 @@
     box-shadow: 0 0 3px #000;
     background-color: rgba(0, 0, 0, 0.75);
     background-clip: padding-box;
-    transition: cubic-bezier(0.24, 0.2, 1, 0.25) 0.3s;
+    transition: width ease-in-out 0.3s;
     font-size: 12px;
     box-sizing: content-box;
 }
@@ -33,6 +33,7 @@
 #coplay button {
     float: left;
     height: 3em;
+    margin: 0;
     border: none;
     background-color: transparent;
     color: #eee;
@@ -99,6 +100,10 @@
 
 #coplay button:disabled {
     opacity: 0.3;
+}
+
+#coplay button:active {
+
 }
 
 @font-face {
