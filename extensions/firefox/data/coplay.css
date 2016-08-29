@@ -94,16 +94,16 @@
     background-color: rgba(255, 255, 255, 0.5);
 }
 
+#coplay button:active {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
 #coplay button:not(:disabled) {
     cursor: pointer;
 }
 
 #coplay button:disabled {
     opacity: 0.3;
-}
-
-#coplay button:active {
-
 }
 
 @font-face {

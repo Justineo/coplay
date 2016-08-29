@@ -1,3 +1,6 @@
+0.4.1
+* Added support for HTML5 player on Bilibili.
+
 0.4.0
 * Added AcFun support.
 * Fixed iframe players for Tencent Video.

@@ -81,10 +81,23 @@
         }, {});
     }
 
-    function on(elem, type, listener) {
+    function on(elem, type, listener, noStop) {
         let prefixes = ['', 'webkit', 'moz'];
         let prefix = prefixes.find(prefix => elem['on' + prefix + type] !== undefined);
-        elem['on' + prefix + type] = listener;
+        elem.addEventListener(prefix + type, function (e) {
+            listener(e);
+            if (!noStop) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            return !!noStop;
+        }, false);
+    }
+
+    function off(elem, type, listener) {
+        let prefixes = ['', 'webkit', 'moz'];
+        let prefix = prefixes.find(prefix => elem['on' + prefix + type] !== undefined);
+        elem.removeEventListener(prefix + type, listener);
     }
 
     function getFullscreenElement(doc) {
@@ -396,37 +409,79 @@
     playerAdaptor.bilibili = {
         prepare: function () {
             if (this._player = get('player_placeholder')) {
+                this._isFlash = true;
                 this.setFullscreenContainer(get('bofqi'));
+                return;
+            }
+            if (this._player = query('.bilibili-player-video video')) {
+                this._isFlash = false;
+                this.setFullscreenContainer(get('bofqi'));
+                return;
+            }
+        },
+        _checkPlayer: function () {
+            // removed from DOM
+            if (this._player && !document.body.contains(this._player)) {
+                this.resetFullscreenContainer();
+                this.prepare();
             }
         },
         play: function () {
-            if (!this.isStart()) {
-                this._player.jwPlay();
+            this._checkPlayer();
+            if (this._isFlash) {
+                if (!this.isStart()) {
+                    this._player.jwPlay();
+                }
+            } else {
+                if (this._player.paused) {
+                    this._player.play();
+                }
             }
         },
         pause: function () {
-            if (this.isStart()) {
-                this._player.jwPause();
+            this._checkPlayer();
+            if (this._isFlash) {
+                if (this.isStart()) {
+                    this._player.jwPause();
+                }
+            } else {
+                if (!this._player.paused) {
+                    this._player.pause();
+                }
             }
         },
         seek: function (sec) {
-            this._player.jwSeek(sec)
+            this._checkPlayer();
+            if (this._isFlash) {
+                this._player.jwSeek(sec)
+            } else {
+                this._player.currentTime = sec;
+            }
         },
         isStart: function () {
-            if (this._player.jwGetState) {
+            this._checkPlayer();
+            if (this._isFlash && this._player.jwGetState) {
                 return this._player.jwGetState() === 'PLAYING';
+            } else {
+                return true;
             }
-            return false;
         },
         getTime: function () {
-            return this._player.jwGetPosition();
+            this._checkPlayer();
+            if (this._isFlash) {
+                return this._player.jwGetPosition();
+            } else {
+                return this._player.currentTime;
+            }
         },
         onfullscreenchange: function (isFullscreen) {
+            this._checkPlayer();
             if (isFullscreen) {
-                this._boxStyle = attr(this._player, 'style');
-                attr(this._player, 'style', this._boxStyle + ';width: calc(100vw + 298px); height: calc(100vh + 98px); margin-top: -50px;');
+                this._box = this._isFlash ? this._player : query('.player', this._fullscreenContainer);
+                this._boxStyle = attr(this._box, 'style');
+                attr(this._box, 'style', this._boxStyle + ';width: calc(100vw + 298px); height: calc(100vh + 98px); margin-top: -50px;');
             } else {
-                attr(this._player, 'style', this._boxStyle);
+                attr(this._box, 'style', this._boxStyle);
             }
         }
     };
@@ -520,12 +575,22 @@
         setFullscreenContainer: function (elem) {
             this._fullscreenContainer = elem;
             elem.classList.add('coplay-fullscreen-container');
-            on(document, 'fullscreenchange', () => {
-                if ((getFullscreenElement(this._doc) === elem) !== this._isFullscreen) {
-                    this.resetFullscreen();
+
+            var _this = this;
+            this._fullscreenChangeHandler = function () {
+                if ((getFullscreenElement(_this._doc) === elem) !== _this._isFullscreen) {
+                    _this.resetFullscreen();
                 }
-            });
+            };
+            on(document, 'fullscreenchange', this._fullscreenChangeHandler);
             this.trigger('fullscreeninit');
+        },
+        resetFullscreenContainer: function () {
+            if (this._fullscreenContainer) {
+                this._fullscreenContainer.classList.remove('coplay-fullscreen-container');
+            }
+            this._fullscreenContainer = null;
+            off(document, 'fullscreenchange', this._fullscreenChangeHandler);
         },
         resetFullscreen: function() {
             coplay.ui.fullscreen.classList.remove('active');
@@ -572,11 +637,11 @@
             innerHTML: '<span class="coplay-heart"></span>',
             title: 'Click to toggle, drag to move the control bar'
         });
-        toggle.onclick = function () {
+        on(toggle, 'click', function () {
             if (!main.classList.contains(DRAGGING_CLASS)) {
                 main.classList.toggle('active');
             }
-        };
+        });
         mainDrag = coplayDrag(main, {
             handle: toggle,
             ondragstart: function () {
@@ -595,93 +660,88 @@
             placeholder: 'Peer ID',
             readOnly: true
         });
-        local.onfocus = function () {
+        on(local, 'focus', function () {
             this.select();
-            return false;
-        };
+        });
+        on(local, 'click', () => {});
 
         let remote = create('input', main, {
             id: getId('remote'),
             type: 'text',
             placeholder: 'Remote peer ID'
         });
+        on(remote, 'click', () => {});
 
         let connect = create('button', main, {
             id: getId('connect'),
             innerHTML: '<span class="coplay-plug"></span>'
         });
-        connect.onclick = function () {
+        on(connect, 'click', function () {
             coplay.connect(remote.value);
-            return false;
-        };
+        });
 
         let disconnect = create('button', main, {
             id: getId('disconnect'),
             hidden: true,
             innerHTML: '<span class="coplay-cancel"></span>'
         });
-        disconnect.onclick = function () {
+        on(disconnect, 'click', function () {
             coplay.disconnect();
-            return false;
-        };
+        });
 
         let play = create('button', main, {
             id: getId('play'),
             innerHTML: '<span class="coplay-play"></span>',
             title: 'Play'
         });
-        play.onclick = function () {
+        on(play, 'click', function () {
             coplay.player.play();
             coplay.remote.send(pack('PLAY'));
-            return false;
-        };
+        });
 
         let pause = create('button', main, {
             id: getId('pause'),
             innerHTML: '<span class="coplay-pause"></span>',
             title: 'Pause'
         });
-        pause.onclick = function () {
+        on(pause, 'click', function () {
             coplay.player.pause();
             coplay.remote.send(pack('PAUSE'));
-            return false;
-        };
+        });
 
         let sync = create('button', main, {
             id: getId('sync'),
             innerHTML: '<span class="coplay-sync"></span>',
             title: 'Sync with me'
         });
-        sync.onclick = function () {
+        on(sync, 'click', function () {
             let time = coplay.player.getTime();
             coplay.player.seek(time);
             coplay.remote.send(pack('SEEK', time));
-            return false;
-        };
+        });
 
         let restart = create('button', main, {
             id: getId('restart'),
             innerHTML: '<span class="coplay-restart"></span>',
             title: 'Restart'
         });
-        restart.onclick = function () {
+        on(restart, 'click', function () {
             if (coplay.player.restart) {
                 coplay.player.restart();
             } else {
                 coplay.player.seek(0.001);
             }
             coplay.remote.send(pack('SEEK', 0));
-            return false;
-        };
+        });
 
         let fullscreen = create('button', main, {
             id: getId('fullscreen'),
             innerHTML: '<span class="coplay-fullscreen"></span><span class="coplay-exit-fullscreen"></span>',
             title: 'Toggle fullscreen'
         });
-        fullscreen.onclick = function () {
+        on(fullscreen, 'click', function () {
             coplay.player.toggleFullscreen();
-        };
+        });
 
         coplay.ui = {
             main,
@@ -704,9 +764,9 @@
                 title: 'Start video call',
                 disabled: true
             });
-            call.onclick = function () {
+            on(call, 'click', function () {
                 coplay.call(coplay.ui.remote.value);
-            };
+            });
             coplay.ui.call = call;
 
             let hangUp = create('button', main, {
@@ -715,9 +775,9 @@
                 hidden: true,
                 title: 'End video call'
             });
-            hangUp.onclick = function () {
+            on(hangUp, 'click', function () {
                 coplay.hangUp();
-            };
+            });
             coplay.ui.hangUp = hangUp;
 
             create('style', document.body, {
