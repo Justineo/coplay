@@ -1,7 +1,7 @@
 {
   "title": "Coplay",
   "name": "coplay",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Synchronizing video play between two peers.",
   "main": "index.js",
   "author": "Jusineo",

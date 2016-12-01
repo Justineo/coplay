@@ -370,15 +370,12 @@
     };
     playerAdaptor.acfun = {
         prepare: function () {
-            let player = get('ACFlashPlayer-re');
+            let player = get('ACFlashPlayer');
             if (player && player.tagName === 'IFRAME') {
-                player = player.contentDocument.getElementById('ACFlashPlayer-re');
-            } else {
-                // Youku Player inside
-                Object.assign(this, pick(playerAdaptor.youku, 'play', 'pause', 'seek', 'isStart', 'getTime'))
+                player = player.contentDocument.getElementById('ACFlashPlayer');
             }
             if (this._player = player) {
-                this.setFullscreenContainer(get('area-player'));
+                this.setFullscreenContainer(get('player'));
             }
         },
         play: function () {
@@ -397,7 +394,7 @@
             return this._player.getTime();
         },
         onfullscreenchange: function (isFullscreen) {
-            let box = get('ACFlashPlayer-re');
+            let box = this._player;
             if (isFullscreen) {
                 this._boxStyle = attr(box, 'style');
                 attr(box, 'style', this._boxStyle + ';width: 100%; height: 100%;');
@@ -408,15 +405,13 @@
     },
     playerAdaptor.bilibili = {
         prepare: function () {
-            if (this._player = get('player_placeholder')) {
-                this._isFlash = true;
-                this.setFullscreenContainer(get('bofqi'));
-                return;
-            }
             if (this._player = query('.bilibili-player-video video')) {
                 this._isFlash = false;
                 this.setFullscreenContainer(get('bofqi'));
-                return;
+            } else {
+                this._player = get('player_placeholder');
+                this._isFlash = true;
+                this.setFullscreenContainer(get('bofqi'));
             }
         },
         _checkPlayer: function () {
