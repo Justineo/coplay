@@ -1,3 +1,6 @@
+0.4.2
+* Fix player initialization for Bilibili and ACFun.
+
 0.4.1
 * Added support for HTML5 player on Bilibili.
 
