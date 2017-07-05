@@ -1,5 +1,8 @@
+0.4.3
+* Fixed iQiyi support due to they switched from Flash to `<video>`.
+
 0.4.2
-* Fix player initialization for Bilibili and ACFun.
+* Fixed player initialization for Bilibili and ACFun.
 
 0.4.1
 * Added support for HTML5 player on Bilibili.

@@ -48,7 +48,7 @@ gulp.task('pack-firefox-addon', ['cp'], function (cb) {
     if (error) {
       return cb(error);
     } else {
-      fs.renameSync('./extensions/firefox/@' + pack.name + '-' + version + '.xpi', './extensions/packed/' + pack.name + '.xpi');
+      fs.renameSync('./extensions/firefox/' + pack.name + '.xpi', './extensions/packed/' + pack.name + '.xpi');
       cb();
     }
   });

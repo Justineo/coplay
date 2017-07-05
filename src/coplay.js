@@ -284,23 +284,48 @@
     playerAdaptor.iqiyi = {
         prepare: function () {
             if (this._player = get('flash')) {
+                this._isFlash = true;
                 this.setFullscreenContainer(get('flashbox'));
-            };
+            } else if (this._player = query('.pw-video video')) {
+                this._isFlash = false;
+                this.setFullscreenContainer(query('.pw-video'));
+            }
         },
         play: function () {
-            this._player.resumeQiyiVideo();
+            if (this._isFlash) {
+                this._player.resumeQiyiVideo();
+            } else {
+                if (this._player.paused) {
+                    window._player.play();
+                }
+            }
         },
         pause: function () {
-            this._player.pauseQiyiVideo();
+            if (this._isFlash) {
+                this._player.pauseQiyiVideo();
+            } else {
+                if (!this._player.paused) {
+                    window._player.pause();
+                }
+            }
         },
         seek: function (sec) {
-            this._player.seekQiyiVideo(sec);
+            if (this._isFlash) {
+                this._player.seekQiyiVideo(sec);
+            } else {
+                window._player.seek(sec);
+            }
+
         },
         isStart: function () {
             return true; // not available yet
         },
         getTime: function () {
-            return JSON.parse(this._player.getQiyiPlayerInfo()).currentTime / 1000;
+            if (this._isFlash) {
+                return JSON.parse(this._player.getQiyiPlayerInfo()).currentTime / 1000;
+            } else {
+                return this._player.currentTime;
+            }
         },
         onfullscreenchange: function (isFullscreen) {
             let box = this._fullscreenContainer;
