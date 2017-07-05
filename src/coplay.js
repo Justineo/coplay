@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    const icons = '__ICONS__';
+
     /**
      * Don't activate inside iframes
      */
@@ -654,7 +656,7 @@
         const DRAGGING_CLASS = 'coplay-dragging';
         let toggle = create('button', main, {
             id: getId('toggle'),
-            innerHTML: '<span class="coplay-heart"></span>',
+            innerHTML: `${icons['heart']}`,
             title: 'Click to toggle, drag to move the control bar'
         });
         on(toggle, 'click', function () {
@@ -694,7 +696,7 @@
 
         let connect = create('button', main, {
             id: getId('connect'),
-            innerHTML: '<span class="coplay-plug"></span>'
+            innerHTML: `${icons['plug']}`
         });
         on(connect, 'click', function () {
             coplay.connect(remote.value);
@@ -703,7 +705,7 @@
         let disconnect = create('button', main, {
             id: getId('disconnect'),
             hidden: true,
-            innerHTML: '<span class="coplay-cancel"></span>'
+            innerHTML: `${icons['cancel']}`
         });
         on(disconnect, 'click', function () {
             coplay.disconnect();
@@ -711,7 +713,7 @@
 
         let play = create('button', main, {
             id: getId('play'),
-            innerHTML: '<span class="coplay-play"></span>',
+            innerHTML: `${icons['play']}`,
             title: 'Play'
         });
         on(play, 'click', function () {
@@ -721,7 +723,7 @@
 
         let pause = create('button', main, {
             id: getId('pause'),
-            innerHTML: '<span class="coplay-pause"></span>',
+            innerHTML: `${icons['pause']}`,
             title: 'Pause'
         });
         on(pause, 'click', function () {
@@ -731,7 +733,7 @@
 
         let sync = create('button', main, {
             id: getId('sync'),
-            innerHTML: '<span class="coplay-sync"></span>',
+            innerHTML: `${icons['sync']}`,
             title: 'Sync with me'
         });
         on(sync, 'click', function () {
@@ -742,7 +744,7 @@
 
         let restart = create('button', main, {
             id: getId('restart'),
-            innerHTML: '<span class="coplay-restart"></span>',
+            innerHTML: `${icons['restart']}`,
             title: 'Restart'
         });
         on(restart, 'click', function () {
@@ -756,7 +758,7 @@
 
         let fullscreen = create('button', main, {
             id: getId('fullscreen'),
-            innerHTML: '<span class="coplay-fullscreen"></span><span class="coplay-exit-fullscreen"></span>',
+            innerHTML: `${icons['expand']}${icons['compress']}`,
             title: 'Toggle fullscreen'
         });
         on(fullscreen, 'click', function () {
@@ -780,7 +782,7 @@
         if (location.protocol === 'https:') {
             let call = create('button', main, {
                 id: getId('call'),
-                innerHTML: '<span class="coplay-call"></span>',
+                innerHTML: `${icons['call']}`,
                 title: 'Start video call',
                 disabled: true
             });
@@ -791,7 +793,7 @@
 
             let hangUp = create('button', main, {
                 id: getId('hang-up'),
-                innerHTML: '<span class="coplay-cancel"></span>',
+                innerHTML: `${icons['cancel']}`,
                 hidden: true,
                 title: 'End video call'
             });

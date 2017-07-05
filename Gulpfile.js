@@ -1,22 +1,38 @@
 var gulp = require('gulp');
 var replace = require('gulp-replace');
+var svgo = require('gulp-svgo');
 var Datauri = require('datauri');
 var fs = require('fs');
 var exec = require('child_process').exec;
 var pack = require('./package.json');
 var version = pack.version;
 
-gulp.task('res', function () {
-  return gulp.src('./src/coplay.css')
-    .pipe(replace(/(url\()(['"]?)([^)]+)\2/, function (matched, $1, $2, $3) {
-      return $1 + new Datauri('src/' + $3).content;
-    }))
+gulp.task('icons', function () {
+  return gulp.src('./assets/icons/*.svg')
+    .pipe(svgo())
+    .pipe(gulp.dest('./dist/icons'));
+});
+
+var svgPattern = /\.svg$/
+gulp.task('res', ['icons'], function () {
+  var iconData = fs.readdirSync('./dist/icons').reduce(function (icons, file) {
+    if (!file.match(svgPattern)) {
+      return
+    }
+
+    var name = file.replace(svgPattern, '');
+    icons[name] = fs.readFileSync('./dist/icons/' + file, 'utf8');
+    return icons;
+  }, {});
+
+  return gulp.src('./src/coplay.js')
+    .pipe(replace('\'__ICONS__\'', JSON.stringify(iconData)))
     .pipe(gulp.dest('./extensions/chrome'))
     .pipe(gulp.dest('./extensions/firefox/data'));
 });
 
 gulp.task('cp', ['res'], function () {
-  return gulp.src(['./src/*', '!./src/coplay.css'])
+  return gulp.src(['./src/*', '!./src/coplay.js'])
     .pipe(gulp.dest('./extensions/chrome'))
     .pipe(gulp.dest('./extensions/firefox/data'));
 });

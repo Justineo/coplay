@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    const icons = {"call":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1792 1792\"><path d=\"M1792 352v1088q0 42-39 59-13 5-25 5-27 0-45-19l-403-403v166q0 119-84.5 203.5T992 1536H288q-119 0-203.5-84.5T0 1248V544q0-119 84.5-203.5T288 256h704q119 0 203.5 84.5T1280 544v165l403-402q18-19 45-19 12 0 25 5 39 17 39 59z\"/></svg>","cancel":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1408 1792\"><path d=\"M1298 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68L976 960l294 294q28 28 28 68z\"/></svg>","compress":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1536 1792\"><path d=\"M768 960v448q0 26-19 45t-45 19-45-19l-144-144-332 332q-10 10-23 10t-23-10L23 1527q-10-10-10-23t10-23l332-332-144-144q-19-19-19-45t19-45 45-19h448q26 0 45 19t19 45zm755-672q0 13-10 23l-332 332 144 144q19 19 19 45t-19 45-45 19H832q-26 0-45-19t-19-45V384q0-26 19-45t45-19 45 19l144 144 332-332q10-10 23-10t23 10l114 114q10 10 10 23z\"/></svg>","expand":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1536 1792\"><path d=\"M755 1056q0 13-10 23l-332 332 144 144q19 19 19 45t-19 45-45 19H64q-26 0-45-19t-19-45v-448q0-26 19-45t45-19 45 19l144 144 332-332q10-10 23-10t23 10l114 114q10 10 10 23zm781-864v448q0 26-19 45t-45 19-45-19l-144-144-332 332q-10 10-23 10t-23-10L791 759q-10-10-10-23t10-23l332-332-144-144q-19-19-19-45t19-45 45-19h448q26 0 45 19t19 45z\"/></svg>","heart":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1792 1792\"><path d=\"M896 1664q-26 0-44-18l-624-602q-10-8-27.5-26T145 952.5 77 855 23.5 734 0 596q0-220 127-344t351-124q62 0 126.5 21.5t120 58T820 276t76 68q36-36 76-68t95.5-68.5 120-58T1314 128q224 0 351 124t127 344q0 221-229 450l-623 600q-18 18-44 18z\"/></svg>","pause":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1536 1792\"><path d=\"M1536 192v1408q0 26-19 45t-45 19H960q-26 0-45-19t-19-45V192q0-26 19-45t45-19h512q26 0 45 19t19 45zm-896 0v1408q0 26-19 45t-45 19H64q-26 0-45-19t-19-45V192q0-26 19-45t45-19h512q26 0 45 19t19 45z\"/></svg>","play":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1408 1792\"><path d=\"M1384 927L56 1665q-23 13-39.5 3T0 1632V160q0-26 16.5-36t39.5 3l1328 738q23 13 23 31t-23 31z\"/></svg>","plug":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1792 1792\"><path d=\"M1755 453q37 38 37 90.5t-37 90.5l-401 400 150 150-160 160q-163 163-389.5 186.5T543 1430l-362 362H0v-181l362-362q-124-185-100.5-411.5T448 448l160-160 150 150 400-401q38-37 91-37t90 37 37 90.5-37 90.5L939 619l234 234 401-400q38-37 91-37t90 37z\"/></svg>","restart":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1024 1792\"><path d=\"M979 141q19-19 32-13t13 32v1472q0 26-13 32t-32-13L269 941q-9-9-13-19v678q0 26-19 45t-45 19H64q-26 0-45-19t-19-45V192q0-26 19-45t45-19h128q26 0 45 19t19 45v678q4-10 13-19z\"/></svg>","sync":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1536 1792\"><path d=\"M1511 1056q0 5-1 7-64 268-268 434.5T764 1664q-146 0-282.5-55T238 1452l-129 129q-19 19-45 19t-45-19-19-45v-448q0-26 19-45t45-19h448q26 0 45 19t19 45-19 45l-137 137q71 66 161 102t187 36q134 0 250-65t186-179q11-17 53-117 8-23 30-23h192q13 0 22.5 9.5t9.5 22.5zm25-800v448q0 26-19 45t-45 19h-448q-26 0-45-19t-19-45 19-45l138-138Q969 384 768 384q-134 0-250 65T332 628q-11 17-53 117-8 23-30 23H50q-13 0-22.5-9.5T18 736v-7q65-268 270-434.5T768 128q146 0 284 55.5T1297 340l130-129q19-19 45-19t45 19 19 45z\"/></svg>"};
+
     /**
      * Don't activate inside iframes
      */
@@ -654,7 +656,7 @@
         const DRAGGING_CLASS = 'coplay-dragging';
         let toggle = create('button', main, {
             id: getId('toggle'),
-            innerHTML: '<span class="coplay-heart"></span>',
+            innerHTML: `${icons['heart']}`,
             title: 'Click to toggle, drag to move the control bar'
         });
         on(toggle, 'click', function () {
@@ -694,7 +696,7 @@
 
         let connect = create('button', main, {
             id: getId('connect'),
-            innerHTML: '<span class="coplay-plug"></span>'
+            innerHTML: `${icons['plug']}`
         });
         on(connect, 'click', function () {
             coplay.connect(remote.value);
@@ -703,7 +705,7 @@
         let disconnect = create('button', main, {
             id: getId('disconnect'),
             hidden: true,
-            innerHTML: '<span class="coplay-cancel"></span>'
+            innerHTML: `${icons['cancel']}`
         });
         on(disconnect, 'click', function () {
             coplay.disconnect();
@@ -711,7 +713,7 @@
 
         let play = create('button', main, {
             id: getId('play'),
-            innerHTML: '<span class="coplay-play"></span>',
+            innerHTML: `${icons['play']}`,
             title: 'Play'
         });
         on(play, 'click', function () {
@@ -721,7 +723,7 @@
 
         let pause = create('button', main, {
             id: getId('pause'),
-            innerHTML: '<span class="coplay-pause"></span>',
+            innerHTML: `${icons['pause']}`,
             title: 'Pause'
         });
         on(pause, 'click', function () {
@@ -731,7 +733,7 @@
 
         let sync = create('button', main, {
             id: getId('sync'),
-            innerHTML: '<span class="coplay-sync"></span>',
+            innerHTML: `${icons['sync']}`,
             title: 'Sync with me'
         });
         on(sync, 'click', function () {
@@ -742,7 +744,7 @@
 
         let restart = create('button', main, {
             id: getId('restart'),
-            innerHTML: '<span class="coplay-restart"></span>',
+            innerHTML: `${icons['restart']}`,
             title: 'Restart'
         });
         on(restart, 'click', function () {
@@ -756,7 +758,7 @@
 
         let fullscreen = create('button', main, {
             id: getId('fullscreen'),
-            innerHTML: '<span class="coplay-fullscreen"></span><span class="coplay-exit-fullscreen"></span>',
+            innerHTML: `${icons['expand']}${icons['compress']}`,
             title: 'Toggle fullscreen'
         });
         on(fullscreen, 'click', function () {
@@ -780,7 +782,7 @@
         if (location.protocol === 'https:') {
             let call = create('button', main, {
                 id: getId('call'),
-                innerHTML: '<span class="coplay-call"></span>',
+                innerHTML: `${icons['call']}`,
                 title: 'Start video call',
                 disabled: true
             });
@@ -791,7 +793,7 @@
 
             let hangUp = create('button', main, {
                 id: getId('hang-up'),
-                innerHTML: '<span class="coplay-cancel"></span>',
+                innerHTML: `${icons['cancel']}`,
                 hidden: true,
                 title: 'End video call'
             });
