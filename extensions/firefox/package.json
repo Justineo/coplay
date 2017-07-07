@@ -1,11 +1,18 @@
 {
   "title": "Coplay",
   "name": "coplay",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "Synchronizing video play between two peers.",
   "main": "index.js",
   "author": "Jusineo",
   "preferences": [
+    {
+      "name": "defaultServer",
+      "title": "Default HTTPS server",
+      "type": "bool",
+      "description": "Enable default HTTPS server over Heroku.",
+      "value": false
+    },
     {
       "name": "server",
       "title": "Custom server",

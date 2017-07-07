@@ -41,6 +41,7 @@
     }
 
     let coplayOptions = {
+        defaultServer: false,
         server: '',
         key: '',
         autoActivate: false

@@ -87,7 +87,7 @@
         let prefixes = ['', 'webkit', 'moz'];
         let prefix = prefixes.find(prefix => elem['on' + prefix + type] !== undefined);
         elem.addEventListener(prefix + type, function (e) {
-            listener(e);
+            listener.call(elem, e);
             if (!noStop) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -882,20 +882,31 @@
                 ]
             }
         };
-        let server = coplayOptions.server;
-        if (server) {
-            let url = parseURL(server);
-            peerOptions.host = url.host || undefined;
-            peerOptions.path = url.path || undefined;
-            peerOptions.port = url.port || undefined;
+        console.log(coplayOptions);
+        let defaultServer = coplayOptions.defaultServer;
+        if (defaultServer) {
+            peerOptions.host = 'coplay-server.herokuapp.com';
+            peerOptions.path = '';
+            peerOptions.port = 443;
+            peerOptions.secure = true;
+            peerOptions.key = 'peerjs';
+        } else {
+            let server = coplayOptions.server;
+            if (server) {
+                let url = parseURL(server);
+                peerOptions.host = url.host || undefined;
+                peerOptions.path = url.path || undefined;
+                peerOptions.port = url.port || undefined;
 
-            if (url.protocol === 'https:') {
-                peerOptions.secure = true;
-            }
-            if (coplayOptions.key) {
-                peerOptions.key = coplayOptions.key;
+                if (url.protocol === 'https:') {
+                    peerOptions.secure = true;
+                }
+                if (coplayOptions.key) {
+                    peerOptions.key = coplayOptions.key;
+                }
             }
         }
+
         let peer = new Peer(peerOptions);
 
         peer.on('open', function (id) {

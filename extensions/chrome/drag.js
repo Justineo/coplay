@@ -277,7 +277,6 @@
 
         this.id = util.guid();
         attr(target, ID_KEY, this.id);
-        attr(this.handle, ID_KEY, this.id);
 
         // save current style attribute to recover later
         this.oldStyle = getCSSText(target);
@@ -286,6 +285,7 @@
         target.style.cursor = 'default';
 
         this.handle = this.handle || target;
+        attr(this.handle, ID_KEY, this.id);
 
         var startHandler = bind(start, this);
         this.__startHandler__ = startHandler;

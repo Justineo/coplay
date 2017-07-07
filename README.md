@@ -26,11 +26,14 @@ Both browsers visit a same video page, activate Coplay and one of the users ente
 
 After establishing the connection, both users can perform pause/resume/seek/restart/sync actions.
 
+For HTTPS sites, users can use video calls to video chat with each other while watching videos. *You might need to put your headphones on while video chatting because Coplay has no <abbr>AEC</abbr>(acoustic echo cancellation) support. (Help needed)*
+
 ![Coplay](coplay.png)
 
 ## Options
 
-* Custom server - You can specify custom PeerJS server. (eg. If you want to use it on Youtube but don't want to allow requests to insecure domains, you can set up a custom PeerJS server with HTTPS support.)
+* Enable default HTTPS server - To work with HTTPS sites you have to use PeerJS service over HTTPS. (eg. If you want to use it on YouTube but don't want to allow requests to insecure domains, you can use the default HTTPS service or you can set up a custom PeerJS server with HTTPS support using the next options.)
+* Custom server - You can specify custom PeerJS server.
 * Key - Provide additional auth key to your custom server (if necessary).
 * Auto-activate - If Coplay detected supported video players on applicable sites, it will be activated automatically.
 
@@ -38,8 +41,4 @@ After establishing the connection, both users can perform pause/resume/seek/rest
 
 * Why Peer ID doesn't show up on Youtube?
 
-  Youtube uses HTTPS but PeerJS (the WebRTC service which Coplay rely on) will make some HTTP requests, which are blocked by browsers' security policies. Current work around see [here](http://du.screenstepslive.com/s/docs/m/7107/l/219447-allow-mixed-content-in-browsers). Or you can set up your custom PeerJS server with HTTPS support.
-
-## One More Thing
-
-We still need a better icon for Coplay!
+  Youtube uses HTTPS but PeerJS (the WebRTC service which Coplay rely on) will make some HTTP requests, which are blocked by browsers' security policies. You can 1. enable default HTTPS server in the options or 2. set up your custom PeerJS server with HTTPS support.

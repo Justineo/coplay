@@ -1,5 +1,9 @@
+0.5.0
+* Added default HTTPS server support and options.
+
 0.4.3
 * Fixed iQiyi support due to they switched from Flash to `<video>`.
+* Switched to SVG icons to get it work on YouTube.
 
 0.4.2
 * Fixed player initialization for Bilibili and ACFun.
