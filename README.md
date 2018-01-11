@@ -29,6 +29,7 @@ After establishing the connection, both users can perform pause/resume/seek/rest
 For HTTPS sites, users can use video calls to video chat with each other while watching videos. *You might need to put your headphones on while video chatting because Coplay has no <abbr>AEC</abbr>(acoustic echo cancellation) support. (Help needed)*
 
 ![Coplay](coplay.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FJustineo%2Fcoplay.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FJustineo%2Fcoplay?ref=badge_shield)
 
 ## Options
 
@@ -42,3 +43,7 @@ For HTTPS sites, users can use video calls to video chat with each other while w
 * Why Peer ID doesn't show up on Youtube?
 
   Youtube uses HTTPS but PeerJS (the WebRTC service which Coplay rely on) will make some HTTP requests, which are blocked by browsers' security policies. You can 1. enable default HTTPS server in the options or 2. set up your custom PeerJS server with HTTPS support.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FJustineo%2Fcoplay.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FJustineo%2Fcoplay?ref=badge_large)
