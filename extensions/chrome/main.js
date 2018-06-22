@@ -16,7 +16,7 @@ function checkAutoInject() {
     }, item => {
         if (item.autoActivate) {
             chrome.webNavigation.onCompleted.addListener(inject, { url: [
-                { urlMatches: '(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.tv|bilibili\.com|le\.com|vimeo\.com)(?:\/|$)' }
+                { urlMatches: '(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.tv|bilibili\.com|le\.com|vimeo\.com|mgtv\.com)(?:\/|$)' }
             ]});
             console.log('Auto injector bound.');
         } else {

@@ -27,6 +27,8 @@
     "https://*.le.com/*",
     "http://*.vimeo.com/*",
     "https://*.vimeo.com/*",
+    "http://*.mgtv.com/*",
+    "https://*.mgtv.com/*",
     "activeTab",
     "webNavigation",
     "storage",

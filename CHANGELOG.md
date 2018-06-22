@@ -1,3 +1,7 @@
+0.5.2
+* Added support for HTML5 player on Mgtv(Only Chrome).
+* Fixed support for HTML5 player on Youku(Only Chrome).
+
 0.5.0
 * Added default HTTPS server support and options.
 
