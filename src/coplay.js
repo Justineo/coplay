@@ -169,27 +169,25 @@
     playerAdaptor.youku = {
         prepare: function () {
             // just return true if ready
-            if (this._player = get('movie_player')) {
-                this.setFullscreenContainer(get('player'));
+            if (this._player = query('#ykPlayer video')) {
+                this.setFullscreenContainer(get('ykPlayer'));
             }
         },
         play: function () {
-            this._player.pauseVideo(false);
+          if (this._player.paused)
+            this._player.play();
         },
         pause: function () {
-            this._player.pauseVideo(true);
+            this._player.pause();
         },
         seek: function (sec) {
-            this._player.nsseek(sec);
+            this._player.currentTime = sec;
         },
         isStart: function () {
-            if (window.playerStart !== undefined) {
-                return playerStart;
-            }
             return true;
         },
         getTime: function () {
-            return this._player.getNsData().time;
+            return this._player.currentTime;
         }
     };
     playerAdaptor.tudou = {
@@ -288,9 +286,9 @@
             if (this._player = get('flash')) {
                 this._isFlash = true;
                 this.setFullscreenContainer(get('flashbox'));
-            } else if (this._player = query('.pw-video video')) {
+            } else if (this._player = query('.iqp-player video')) {
                 this._isFlash = false;
-                this.setFullscreenContainer(query('.pw-video'));
+                this.setFullscreenContainer(query('.iqp-player'));
             }
         },
         play: function () {
@@ -298,7 +296,7 @@
                 this._player.resumeQiyiVideo();
             } else {
                 if (this._player.paused) {
-                    window._player.play();
+                    this._player.play();
                 }
             }
         },
@@ -307,7 +305,7 @@
                 this._player.pauseQiyiVideo();
             } else {
                 if (!this._player.paused) {
-                    window._player.pause();
+                    this._player.pause();
                 }
             }
         },
@@ -315,7 +313,7 @@
             if (this._isFlash) {
                 this._player.seekQiyiVideo(sec);
             } else {
-                window._player.seek(sec);
+                this._player.currentTime = sec;
             }
 
         },
@@ -323,20 +321,7 @@
             return true; // not available yet
         },
         getTime: function () {
-            if (this._isFlash) {
-                return JSON.parse(this._player.getQiyiPlayerInfo()).currentTime / 1000;
-            } else {
-                return this._player.currentTime;
-            }
-        },
-        onfullscreenchange: function (isFullscreen) {
-            let box = this._fullscreenContainer;
-            if (isFullscreen) {
-                this._boxStyle = attr(box, 'style');
-                attr(box, 'style', this._boxStyle + ';width: 100vw; height: 100vh;');
-            } else {
-                attr(box, 'style', this._boxStyle);
-            }
+            return this._player.currentTime;
         }
     };
     playerAdaptor.sohu = {
