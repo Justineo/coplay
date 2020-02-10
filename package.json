@@ -1,6 +1,6 @@
 {
   "name": "coplay",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Synchronizing video play between two peers.",
   "repository": {
     "type": "git",
@@ -12,13 +12,12 @@
     "peer"
   ],
   "devDependencies": {
-    "datauri": "^1.0.4",
-    "gulp": "^3.8.9",
-    "gulp-minify-css": "~0.3.0",
-    "gulp-rename": "~1.2.0",
+    "datauri": "^1.1.0",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^1.2.3",
     "gulp-replace": "^0.5.4",
-    "gulp-svgo": "^1.1.1",
-    "gulp-uglify": "~1.0.0"
+    "gulp-svgo": "^1.5.4",
+    "gulp-uglify": "^1.0.0"
   },
   "author": "Justineo",
   "license": "MIT",

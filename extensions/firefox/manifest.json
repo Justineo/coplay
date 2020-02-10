@@ -48,10 +48,15 @@
     "scripts": [
       "main.js"
     ],
-    "persistent": false
+    "persistent": true
   },
   "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
+    "page": "options.html"
+  },
+  "applications": {
+    "gecko": {
+      "id": "@coplay",
+      "strict_min_version": "55.0"
+    }
   }
 }

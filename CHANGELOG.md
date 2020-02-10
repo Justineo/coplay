@@ -1,3 +1,9 @@
+0.6.0
+* Enables default HTTPS server by default.
+* Updated vendor support.
+* Dropped LeTV support.
+* Added MGTV support.
+
 0.5.0
 * Added default HTTPS server support and options.
 
@@ -6,10 +12,10 @@
 * Switched to SVG icons to get it work on YouTube.
 
 0.4.2
-* Fixed player initialization for Bilibili and ACFun.
+* Fixed player initialization for bilibili and ACFun.
 
 0.4.1
-* Added support for HTML5 player on Bilibili.
+* Added support for HTML5 player on bilibili.
 
 0.4.0
 * Added AcFun support.
@@ -17,7 +23,7 @@
 
 0.3.4
 * Hot fix for connection failure on HTTP sites because of null exception.
-* Fixed occasional failure on Bilibili.
+* Fixed occasional failure on bilibili.
 
 0.3.3
 * Fixed Youku player adaption for specific pages.

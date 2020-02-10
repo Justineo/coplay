@@ -1,66 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Coplay - Options</title>
-<style>
-body {
-    padding-bottom: 36px;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <title>Coplay - Options</title>
+    <style>
+      body {
+        padding-bottom: 36px;
+      }
 
-p {
-    line-height: normal;
-}
+      p {
+        line-height: normal;
+      }
 
-:-webkit-any(#form, #actions) button {
-    margin-left: 10px;
-}
+      :-webkit-any(#form, #actions) button {
+        margin-left: 10px;
+      }
 
-:-webkit-any(#form, #actions) button:first-child {
-    margin-left: 0;
-}
+      :-webkit-any(#form, #actions) button:first-child {
+        margin-left: 0;
+      }
 
-#server-config {
-    display: flex;
-}
+      #server-config {
+        display: flex;
+      }
 
-#server {
-    width: 0;
-    flex: 3 0 0;
-    margin-right: 5px;
-}
+      #server {
+        width: 0;
+        flex: 3 0 0;
+        margin-right: 5px;
+      }
 
-#key {
-    width: 0;
-    flex: 1 0 0;
-}
+      #key {
+        width: 0;
+        flex: 1 0 0;
+      }
 
-#actions {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 14px 17px;
-    background: #fff;
-    text-align: right;
-}
+      #actions {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 14px 17px;
+        background: #fff;
+        text-align: right;
+      }
 
-#save:not(:focus) {
-    border-color: rgba(0, 0, 0, 0.5);
-}
-</style>
-</head>
-<body>
-<section id="form">
-    <h3>Custom server</h3>
-    <p><label><input type="checkbox" id="default-server"> Use default HTTPS server</label></p>
-    <p id="server-config"><input type="text" id="server" placeholder="Configure server URL other than PeerJS's free server here..."> <input type="text" id="key" placeholder="Key (optional)..."></p>
-    <h3>Auto-activate</h3>
-    <p><label><input type="checkbox" id="auto-activate"> Automatically activate coplay on applicable sites</label></p>
-</section>
-<section id="actions">
-    <button id="cancel">Cancel</button><button id="save" class="default-button">Save</button>
-</section>
-<script src="options.js"></script>
-</body>
+      #save:not(:focus) {
+        border-color: rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <section id="form">
+      <h3>Custom server</h3>
+      <p id="server-config">
+        <input
+          type="text"
+          id="server"
+          placeholder="Configure server URL other than PeerJS's free server here..."
+        />
+        <input type="text" id="key" placeholder="Key (optional)..." />
+      </p>
+      <h3>Auto-activate</h3>
+      <p>
+        <label
+          ><input type="checkbox" id="auto-activate" /> Automatically activate
+          coplay on applicable sites</label
+        >
+      </p>
+    </section>
+    <section id="actions">
+      <button id="cancel">Cancel</button
+      ><button id="save" class="default-button">Save</button>
+    </section>
+    <script src="options.js"></script>
+  </body>
 </html>

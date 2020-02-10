@@ -1,46 +1,46 @@
 #coplay {
-    position: fixed;
-    left: 2em;
-    bottom: 1em;
-    width: 3em;
-    height: 3em;
-    z-index: 2147483647; /* max integer */
-    overflow: hidden;
-    border-radius: 3px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 3px #000;
-    background-color: rgba(0, 0, 0, 0.75);
-    background-clip: padding-box;
-    transition: width ease-in-out 0.3s;
-    font-size: 12px;
-    box-sizing: content-box;
+  position: fixed;
+  left: 2em;
+  bottom: 1em;
+  width: 3em;
+  height: 3em;
+  z-index: 2147483647; /* max integer */
+  overflow: hidden;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 3px #000;
+  background-color: rgba(0, 0, 0, 0.75);
+  background-clip: padding-box;
+  transition: width ease-in-out 0.3s;
+  font-size: 12px;
+  box-sizing: content-box;
 }
 
 #coplay.active {
-    width: 43em;
+  width: 43em;
 }
 
 #coplay.active #coplay-toggle {
-    color: #c33;
-    text-shadow: 0 1px 0 #333;
+  color: #c33;
+  text-shadow: 0 1px 0 #333;
 }
 
 #coplay * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #coplay input,
 #coplay button {
-    float: left;
-    height: 3em;
-    margin: 0;
-    border: none;
-    background-color: transparent;
-    color: #eee;
-    font-size: inherit;
-    font-family: inherit;
-    line-height: 3em;
-    outline: none;
+  float: left;
+  height: 3em;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  color: #eee;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: 3em;
+  outline: none;
 }
 #coplay button::-moz-focus-inner {
   border-style: none;
@@ -48,62 +48,62 @@
 }
 
 #coplay input {
-    width: 11em;
-    padding: 0 1em;
-    font-family: Consolas, monospace;
-    text-align: left;
+  width: 11em;
+  padding: 0 1em;
+  font-family: Consolas, monospace;
+  text-align: left;
 }
 
 #coplay input + input,
 #coplay input + button,
 #coplay button + input,
 #coplay button + button {
-    border-left: none;
+  border-left: none;
 }
 
 #coplay input::-moz-placeholder {
-    font-family: inherit;
-    color: #999;
+  font-family: inherit;
+  color: #999;
 }
 #coplay input::-webkit-input-placeholder {
-    font-family: inherit;
-    color: #999;
+  font-family: inherit;
+  color: #999;
 }
 #coplay input:focus::-moz-placeholder {
-    color: #ccc;
+  color: #ccc;
 }
 #coplay input:focus::-webkit-input-placeholder {
-    color: #ccc;
+  color: #ccc;
 }
 
 #coplay input:focus {
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 #coplay button {
-    width: 3em;
-    padding: 0;
-    border-radius: 0;
-    text-align: center;
+  width: 3em;
+  padding: 0;
+  border-radius: 0;
+  text-align: center;
 }
 
 #coplay button:hover:not(:disabled) {
-    color: #fff;
-    text-shadow: 0 1px 0 #111;
-    background-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  text-shadow: 0 1px 0 #111;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 #coplay button:active {
-    background-color: rgba(255, 255, 255, 0.8) !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
 }
 
 #coplay button:not(:disabled) {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #coplay button:disabled {
-    opacity: 0.3;
+  opacity: 0.3;
 }
 
 #coplay button svg {
@@ -115,24 +115,11 @@
 
 #coplay-fullscreen svg:last-child,
 #coplay-fullscreen.active svg:first-child {
-    display: none;
+  display: none;
 }
 
 #coplay-fullscreen.active svg:last-child {
-    display: inline-block;
-}
-
-.coplay-fullscreen-container:fullscreen {
-    width: 100vw !important;
-    height: 100vh !important;
-}
-.coplay-fullscreen-container:-webkit-full-screen {
-    width: 100vw !important;
-    height: 100vh !important;
-}
-.coplay-fullscreen-container:-moz-full-screen {
-    width: 100vw !important;
-    height: 100vh !important;
+  display: inline-block;
 }
 
 @keyframes shift {
@@ -145,31 +132,31 @@
 }
 #coplay-local-video,
 #coplay-remote-video {
-    position: fixed;
-    top: 10px;
-    z-index: 2147483647;
-    border-radius: 3px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 3px #000;
-    background-size: 64px 64px;
-    background-clip: padding-box;
-    animation: shift 2s linear infinite;
+  position: fixed;
+  top: 10px;
+  z-index: 2147483647;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 3px #000;
+  background-size: 64px 64px;
+  background-clip: padding-box;
+  animation: shift 2s linear infinite;
 }
 #coplay-local-video {
-    right: 340px;
-    width: 160px;
-    height: 120px;
-    transform: rotateY(180deg);
+  right: 340px;
+  width: 160px;
+  height: 120px;
+  transform: rotateY(180deg);
 }
 #coplay-remote-video {
-    right: 10px;
-    width: 320px;
-    height: 240px;
-    background-image: repeating-linear-gradient(
-        -45deg,
-        rgba(0, 0, 0, 0.1),
-        rgba(0, 0, 0, 0.1) 25%,
-        rgba(255, 255, 255, 0.4) 25%,
-        rgba(255, 255, 255, 0.4) 50%
-    );
+  right: 10px;
+  width: 320px;
+  height: 240px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1) 25%,
+    rgba(255, 255, 255, 0.4) 25%,
+    rgba(255, 255, 255, 0.4) 50%
+  );
 }
