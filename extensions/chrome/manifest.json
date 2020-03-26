@@ -27,6 +27,8 @@
     "https://*.mgtv.com/*",
     "http://*.vimeo.com/*",
     "https://*.vimeo.com/*",
+    "http://*.ifun.tv/*",
+    "https://*.ifun.tv/*",
     "activeTab",
     "webNavigation",
     "storage",

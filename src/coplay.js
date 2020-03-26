@@ -24,9 +24,9 @@
     return;
   }
 
-  // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube, ACFun, bilibili, MGTV, Vimeo
+  // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube, ACFun, bilibili, MGTV, Vimeo, ifun
   let host = location.host.match(
-    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com)(?:\/|$)/i
+    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com|ifun.tv)(?:\/|$)/i
   );
   if (!host) {
     return;
@@ -419,6 +419,33 @@
         this._player.exitFullscreen();
       } else {
         this._player.fullScreen();
+      }
+    }
+  };
+  playerAdaptor.ifun = {
+    prepare() {
+      this._player = document.getElementsByTagName('video').video_player;
+    },
+    play() {
+      this._player.play();
+    },
+    pause() {
+      this._player.pause();
+    },
+    seek(sec) {
+      this._player.currentTime = sec;
+    },
+    isReady() {
+      return this._player.readyState === 4;
+    },
+    getTime() {
+      return this._player.currentTime;
+    },
+    toggleFullscreen() {
+      if (fullscreen()) {
+        this._player.webkitExitFullScreen();
+      } else {
+        this._player.requestFullscreen();
       }
     }
   };
