@@ -6,7 +6,7 @@ Synchronizing video play between two peers.
 
 When two browsers are playing the same web video, Coplay can connect them with WebRTC (using PeerJS) and enable users to control two video players synchronously.
 
-Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi, YouTube, AcFun, bilibili, LETV and Vimeo.
+Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi, rijula, YouTube, AcFun, bilibili, LETV and Vimeo.
 
 Buttons on control bar stands for "connect", "play", "pause", "sync", "restart", "fullscreen" and "video chat".
 
@@ -41,4 +41,4 @@ For HTTPS sites, users can use video calls to video chat with each other while w
 
 * Why Peer ID doesn't show up on Youtube?
 
-  Youtube uses HTTPS but PeerJS (the WebRTC service which Coplay rely on) will make some HTTP requests, which are blocked by browsers' security policies. You can 1. enable default HTTPS server in the options or 2. set up your custom PeerJS server with HTTPS support.
+  Youtube uses HTTPS but PeerJS (the WebRTC service which Coplay rely on) will make some HTTP requests, which are blocked by browsers' security policies. You can 1. enable default HTTPS server in the options or 2. set up your custom PeerJS server with HTTPS support.da
