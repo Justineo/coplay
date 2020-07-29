@@ -26,7 +26,7 @@
 
   // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube, ACFun, bilibili, MGTV, Vimeo
   let host = location.host.match(
-    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com|97riju\.net|rijula\.com)(?:\/|$)/i
+    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com|rijula\.com)(?:\/|$)/i
   );
 
   if (!host) {
@@ -484,13 +484,8 @@
   };
 
   function initPlayer(done) {
-    let tmp_host = host
     
-    if (tmp_host == "97riju"){
-      tmp_host = "riju"
-      console.log("tmp_host is "+tmp_host);
-    }
-    let player = Object.assign({}, playerBase, playerAdaptor[tmp_host]);
+    let player = Object.assign({}, playerBase, playerAdaptor[host]);
 
     (function init() {
       player.init();
