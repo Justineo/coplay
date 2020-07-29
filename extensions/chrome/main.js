@@ -21,7 +21,7 @@ function checkAutoInject() {
           url: [
             {
               urlMatches:
-                '(?:^|.)(youku.com|sohu.com|tudou.com|qq.com|iqiyi.com|youtube.com|acfun.cn|bilibili.com|mgtv.com|vimeo.com)(?:/|$)'
+                '(?:^|.)(youku.com|sohu.com|tudou.com|qq.com|iqiyi.com|youtube.com|acfun.cn|bilibili.com|mgtv.com|vimeo.com|97riju.net|rijula.com)(?:/|$)'
             }
           ]
         });
