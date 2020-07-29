@@ -399,34 +399,6 @@
     }
   };
 
-  playerAdaptor.riju = {
-    prepare() {
-      this._player = query('.dplayer-video-wrap video');
-    },
-    play() {
-      this._player.play();
-    },
-    pause() {
-      this._player.pause();
-    },
-    seek(sec) {
-      this._player.currentTime = sec;
-    },
-    isReady() {
-      return this._player.readyState === 4;
-    },
-    getTime() {
-      return this._player.currentTime;
-    },
-    toggleFullscreen() {
-      if (fullscreen()) {
-        this._player.exitFullscreen();
-      } else {
-        this._player.fullScreen();
-      }
-    }
-  };
-
   playerAdaptor.rijula = {
     prepare() {
       this._player = query('.dplayer-video-wrap video',document.getElementById("fed-play-iframe").contentWindow.document);
@@ -456,7 +428,8 @@
   };
   playerAdaptor.mgtv = {
     prepare() {
-      this._player = MGTVPlayer.getPlayer();
+      // this._player = MGTVPlayer.getPlayer();
+      this._player = query("#mgtv-player-wrap video");
     },
     play() {
       this._player.play();
@@ -465,10 +438,10 @@
       this._player.pause();
     },
     seek(sec) {
-      this._player.seek(sec);
+      this._player.currentTime = sec;
     },
     isReady() {
-      return this._player.state === 4;
+      return this._player.readyState === 4;
     },
     getTime() {
       return this._player.currentTime;
