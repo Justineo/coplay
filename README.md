@@ -42,3 +42,9 @@ For HTTPS sites, users can use video calls to video chat with each other while w
 * Why Peer ID doesn't show up on Youtube?
 
   Youtube uses HTTPS but PeerJS (the WebRTC service which Coplay rely on) will make some HTTP requests, which are blocked by browsers' security policies. You can 1. enable default HTTPS server in the options or 2. set up your custom PeerJS server with HTTPS support.
+
+## Development
+
+Use `npm run pack` to build Chrome extension and Firefox add-on
+
+Use `npm run safari` to build Safari web extension app
