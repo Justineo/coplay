@@ -47,4 +47,4 @@ For HTTPS sites, users can use video calls to video chat with each other while w
 
 Use `npm run pack` to build Chrome extension and Firefox add-on
 
-Use `npm run safari` to build Safari web extension app
+Use `npm run safari` to build Safari web extension app, requires macOS Big Sur and latest Xcode
