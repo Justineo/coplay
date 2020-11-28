@@ -39,15 +39,33 @@ gulp.task(
   'cp',
   gulp.series('res', function() {
     return gulp
-      .src(['./src/*', '!./src/coplay.js'])
+      .src(['./src/*', '!./src/coplay.js', '!./src/chrome', '!./src/firefox'])
       .pipe(gulp.dest('./extensions/chrome'))
       .pipe(gulp.dest('./extensions/firefox'));
   })
 );
 
 gulp.task(
+  'cp-chrome',
+  gulp.series('cp', function() {
+    return gulp
+      .src('./src/chrome/*')
+      .pipe(gulp.dest('./extensions/chrome'))
+  })
+)
+
+gulp.task(
+  'cp-firefox',
+  gulp.series('cp', function() {
+    return gulp
+      .src('./src/firefox/*')
+      .pipe(gulp.dest('./extensions/firefox'))
+  })
+)
+
+gulp.task(
   'pack-chrome-extension',
-  gulp.series('cp', function(cb) {
+  gulp.series('cp-chrome', function(cb) {
     var manifestPath = './extensions/chrome/manifest.json';
     var manifest = JSON.parse(
       fs.readFileSync(manifestPath, { encoding: 'utf8' })
@@ -55,7 +73,7 @@ gulp.task(
     manifest.version = version;
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, '  '));
     exec(
-      "find . -path '*/.*' -prune -o -type f -print | zip ../packed/coplay.chrome.zip -@",
+      "mkdir -p ../packed && find . -path '*/.*' -prune -o -type f -print | zip ../packed/coplay.chrome.zip -@",
       {
         cwd: 'extensions/chrome'
       },
@@ -72,7 +90,7 @@ gulp.task(
 
 gulp.task(
   'pack-firefox-addon',
-  gulp.series('cp', function(cb) {
+  gulp.series('cp-firefox', function(cb) {
     var manifestPath = './extensions/firefox/manifest.json';
     var manifest = JSON.parse(
       fs.readFileSync(manifestPath, { encoding: 'utf8' })
@@ -80,7 +98,7 @@ gulp.task(
     manifest.version = version;
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, '  '));
     exec(
-      "find . -path '*/.*' -prune -o -type f -print | zip ../packed/coplay.firefox.zip -@",
+      "mkdir -p ../packed && find . -path '*/.*' -prune -o -type f -print | zip ../packed/coplay.firefox.zip -@",
       {
         cwd: 'extensions/firefox'
       },
@@ -99,4 +117,21 @@ gulp.task(
   'extensions',
   gulp.series('pack-chrome-extension', 'pack-firefox-addon')
 );
+
+gulp.task(
+  'build-safari-web-extension',
+  gulp.series('cp-chrome', function (cb) {
+    exec(
+      "sh build-safari.sh",
+      function(error) {
+        if (error) {
+          return cb(error);
+        } else {
+          cb();
+        }
+      } 
+    )
+  })
+)
+
 gulp.task('default', gulp.series('extensions'));
