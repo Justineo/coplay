@@ -678,7 +678,6 @@
     }
 
     let peerOptions = {
-      key: 'kl2e8piw363qsemi',
       config: {
         // free servers from https://gist.github.com/yetithefoot/7592580
         iceServers: [
@@ -718,7 +717,8 @@
             username: '28224511:1379330808'
           }
         ]
-      }
+      },
+      debug: 3
     };
 
     console.log(coplayOptions);
@@ -736,12 +736,6 @@
       if (coplayOptions.key) {
         peerOptions.key = coplayOptions.key;
       }
-    } else {
-      peerOptions.host = 'coplay-server.herokuapp.com';
-      peerOptions.path = '';
-      peerOptions.port = 443;
-      peerOptions.secure = true;
-      peerOptions.key = 'peerjs';
     }
 
     let peer = new Peer(peerOptions);
