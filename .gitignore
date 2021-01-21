@@ -29,3 +29,4 @@ node_modules
 
 .DS_store
 extensions
+.idea
