@@ -1,47 +1,54 @@
 # Coplay
 
-Synchronizing video play between two peers.
+Synchronize playing video between two peers.
 
-## Intro
+## Introduction
 
-When two browsers are playing the same web video, Coplay can connect them with WebRTC (using PeerJS) and enable users to control two video players synchronously.
+Coplay connects two users who are on the same video site and let them control both video players simultaneously.
 
-Coplay now works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi, YouTube, AcFun, bilibili, LETV and Vimeo.
+Coplay works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi, YouTube, AcFun, bilibili, LETV and Vimeo.
 
-Buttons on control bar stands for "connect", "play", "pause", "sync", "restart", "fullscreen" and "video chat".
+This is a forked version of the [original](https://github.com/Justineo/coplay). Improvements over the original version include
+
+* Use up-to-date peer.js library and the official peer.js server so that the initial connection is more reliable
 
 ## Installation
 
-### Chrome
+[Install on Chrome](https://chrome.google.com/webstore/detail/coplay/heolgpojkkeacaokbpolhalhlaidpkkc/).
 
-Visit [Coplay on Chrome Web Store](https://chrome.google.com/webstore/detail/coplay/heolgpojkkeacaokbpolhalhlaidpkkc/) to install.
-
-### Firefox
-
-Visit [Coplay on Firefox Add-ons](https://addons.mozilla.org/firefox/addon/coplay/) to install.
+[Install on Firefox](https://addons.mozilla.org/firefox/addon/coplay/)
 
 ## Usage
 
-Both browsers visit a same video page, activate Coplay and one of the users enter the other one's peer ID and connect.
+1. The two users visit the same video page on one of the supported video sites
+   
+2. One of the users enters the peer ID of another user and click the connect button
 
-After establishing the connection, both users can perform pause/resume/seek/restart/sync actions.
+![connect](./images/connect.png)
 
-For HTTPS sites, users can use video calls to video chat with each other while watching videos. *You might need to put your headphones on while video chatting because Coplay has no <abbr>AEC</abbr>(acoustic echo cancellation) support. (Help needed)*
+3. After connection is established (indicated by the disconnect button), both users can play, pause, synchronize video progress, and toggle full screen
 
-![Coplay](coplay.png)
+  **Video players are only synchronized if users use the button on the Coplay control bar**
+
+![Coplay](./images/coplay.png)
+
+On HTTPS sites, users can use video calls to video chat with each other while watching videos. *You might need to put your headphones on while video chatting because Coplay has no <abbr>AEC</abbr>(acoustic echo cancellation) support. (Help needed)*
 
 ## Options
 
-* Enable default HTTPS server - To work with HTTPS sites you have to use PeerJS service over HTTPS. (eg. If you want to use it on YouTube but don't want to allow requests to insecure domains, you can use the default HTTPS service or you can set up a custom PeerJS server with HTTPS support using the next options.)
-* Custom server - You can specify custom PeerJS server.
-* Key - Provide additional auth key to your custom server (if necessary).
+* Custom server - You can specify a custom PeerJS server.
+  
+* Key - Provide additional authorization key to your custom server if necessary.
+  
 * Auto-activate - If Coplay detected supported video players on applicable sites, it will be activated automatically.
 
 ## FAQ
 
-* Why Peer ID doesn't show up on Youtube?
+* Why doesn't my Peer ID show up on YouTube?
+  
+YouTube uses HTTPS but PeerJS (the WebRTC service which Coplay relies on) makes some HTTP requests, which are blocked by browsers' security policies.
 
-  Youtube uses HTTPS but PeerJS (the WebRTC service which Coplay rely on) will make some HTTP requests, which are blocked by browsers' security policies. You can 1. enable default HTTPS server in the options or 2. set up your custom PeerJS server with HTTPS support.
+You can either enable default HTTPS server in the options, or set up your custom PeerJS server with HTTPS support.
 
 ## Development
 
