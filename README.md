@@ -8,7 +8,7 @@ Coplay connects two users who are on the same video site and let them control bo
 
 Coplay works on Youku, Sohu TV, Tencent Video, Tudou, iQiyi, YouTube, AcFun, bilibili, LETV and Vimeo.
 
-This is a forked version of the [original](https://github.com/Justineo/coplay). Improvements over the original version include
+This is a forked version of the [original by @Justineo](https://github.com/Justineo/coplay). Improvements over the original version include
 
 * Use up-to-date peer.js library and the official peer.js server so that the initial connection is more reliable
 

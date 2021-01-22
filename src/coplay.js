@@ -145,10 +145,10 @@
   }
 
   /**
-   * Player adaptor layer
+   * Player adapter layer
    */
-  let playerAdaptor = {};
-  playerAdaptor.youku = {
+  let playerAdapter = {};
+  playerAdapter.youku = {
     prepare() {
       this._player = window.videoPlayer;
     },
@@ -175,7 +175,7 @@
       }
     }
   };
-  playerAdaptor.tudou = {
+  playerAdapter.tudou = {
     prepare() {
       this._player = query('video[data-canplay="play"]');
     },
@@ -201,7 +201,7 @@
       ).click();
     }
   };
-  playerAdaptor.qq = {
+  playerAdapter.qq = {
     prepare() {
       this._player = window.PLAYER;
     },
@@ -228,7 +228,7 @@
       }
     }
   };
-  playerAdaptor.iqiyi = {
+  playerAdapter.iqiyi = {
     prepare() {
       this._player = query('.iqp-player video');
     },
@@ -251,7 +251,7 @@
       query('.iqp-btn-fullscreen').click();
     }
   };
-  playerAdaptor.sohu = {
+  playerAdapter.sohu = {
     prepare() {
       this._player = window._player;
     },
@@ -278,7 +278,7 @@
       }
     }
   };
-  playerAdaptor.youtube = {
+  playerAdapter.youtube = {
     prepare() {
       let player = get('movie_player');
       if (visible(player)) {
@@ -304,7 +304,7 @@
       this._player.toggleFullscreen();
     }
   };
-  playerAdaptor.acfun = {
+  playerAdapter.acfun = {
     prepare() {
       this._player = window.player;
     },
@@ -327,7 +327,7 @@
       query('.fullscreen-screen').click();
     }
   };
-  playerAdaptor.bilibili = {
+  playerAdapter.bilibili = {
     prepare() {
       if (window.player) {
         Object.defineProperty(this, '_player', {
@@ -356,7 +356,7 @@
       query('.bilibili-player-video-btn-fullscreen').click();
     }
   };
-  playerAdaptor.vimeo = {
+  playerAdapter.vimeo = {
     prepare() {
       let component = findReactComponent(query('[data-player="true"]'));
       if (!component) {
@@ -395,7 +395,7 @@
       query('.fullscreen').click();
     }
   };
-  playerAdaptor.mgtv = {
+  playerAdapter.mgtv = {
     prepare() {
       this._player = MGTVPlayer.getPlayer();
     },
@@ -452,7 +452,7 @@
   };
 
   function initPlayer(done) {
-    let player = Object.assign({}, playerBase, playerAdaptor[host]);
+    let player = Object.assign({}, playerBase, playerAdapter[host]);
 
     (function init() {
       player.init();
