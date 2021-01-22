@@ -1,11 +1,7 @@
 {
-  "name": "coplay",
-  "version": "0.6.0",
-  "description": "Synchronizing video play between two peers.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Justineo/coplay.git"
-  },
+  "name": "coplay-forked",
+  "version": "0.6.1",
+  "description": "Synchronize online video playing between peers.",
   "keywords": [
     "sync",
     "video",
@@ -24,9 +20,5 @@
     "gulp-uglify": "^1.0.0"
   },
   "author": "Justineo",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Justineo/coplay/issues"
-  },
-  "homepage": "https://github.com/Justineo/coplay"
+  "license": "MIT"
 }

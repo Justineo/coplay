@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Coplay",
-  "description": "Synchronizing video play between two peers.",
-  "version": "0.6.0",
+  "name": "Coplay-forked",
+  "description": "Synchronize online video playing between peers.",
+  "version": "0.6.1",
   "icons": {
     "128": "coplay.png"
   },
@@ -55,7 +55,7 @@
   },
   "applications": {
     "gecko": {
-      "id": "@coplay",
+      "id": "@coplay-forked",
       "strict_min_version": "55.0"
     }
   }

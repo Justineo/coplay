@@ -1,3 +1,6 @@
+0.6.1
+* Use up-to-date peer.js library and the official peer.js server
+
 0.6.0
 * Enables default HTTPS server by default.
 * Updated vendor support.

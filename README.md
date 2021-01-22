@@ -1,6 +1,6 @@
 # Coplay
 
-Synchronize playing video between two peers.
+Synchronize online video playing between peers.
 
 ## Introduction
 
