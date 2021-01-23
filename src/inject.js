@@ -1,4 +1,4 @@
-(function() {
+(function () {
   function loadScript(url, callback) {
     function doCallback() {
       if (typeof callback === 'function') {

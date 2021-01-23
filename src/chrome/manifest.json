@@ -7,48 +7,45 @@
     "128": "coplay.png"
   },
   "permissions": [
-    "http://*.youku.com/*",
-    "https://*.youku.com/*",
-    "http://*.sohu.com/*",
-    "https://*.sohu.com/*",
-    "http://*.tudou.com/*",
-    "https://*.tudou.com/*",
-    "http://*.qq.com/*",
-    "https://*.qq.com/*",
-    "http://*.iqiyi.com/*",
-    "https://*.iqiyi.com/*",
-    "http://*.youtube.com/*",
-    "https://*.youtube.com/*",
-    "http://*.acfun.cn/*",
-    "https://*.acfun.cn/*",
-    "http://*.bilibili.com/*",
-    "https://*.bilibili.com/*",
-    "http://*.mgtv.com/*",
-    "https://*.mgtv.com/*",
-    "http://*.vimeo.com/*",
-    "https://*.vimeo.com/*",
-    "activeTab",
-    "webNavigation",
-    "storage",
-    "tabs"
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*.youku.com/*",
+        "https://*.youku.com/*",
+        "http://*.sohu.com/*",
+        "https://*.sohu.com/*",
+        "http://*.tudou.com/*",
+        "https://*.tudou.com/*",
+        "http://*.qq.com/*",
+        "https://*.qq.com/*",
+        "http://*.iqiyi.com/*",
+        "https://*.iqiyi.com/*",
+        "http://*.youtube.com/*",
+        "https://*.youtube.com/*",
+        "http://*.acfun.cn/*",
+        "https://*.acfun.cn/*",
+        "http://*.bilibili.com/*",
+        "https://*.bilibili.com/*",
+        "http://*.mgtv.com/*",
+        "https://*.mgtv.com/*",
+        "http://*.vimeo.com/*",
+        "https://*.vimeo.com/*"
+      ],
+      "js": ["inject.js"]
+    }
   ],
   "web_accessible_resources": [
     "peer.js",
     "drag.js",
     "coplay.js",
-    "coplay.css",
-    "coplay.woff"
+    "coplay.css"
   ],
   "browser_action": {
     "default_icon": {
       "128": "coplay.png"
     }
-  },
-  "background": {
-    "scripts": [
-      "main.js"
-    ],
-    "persistent": false
   },
   "options_ui": {
     "page": "options.html",
