@@ -20,7 +20,7 @@
         margin-left: 0;
       }
 
-      #server-config {
+      .server-config {
         display: flex;
       }
 
@@ -52,21 +52,19 @@
   </head>
   <body>
     <section id="form">
+      <p>Refresh existing tabs to apply settings</p>
       <h3>Custom server</h3>
-      <p id="server-config">
-        <input
-          type="text"
-          id="server"
-          placeholder="Configure server URL other than PeerJS's free server here..."
-        />
-        <input type="text" id="key" placeholder="Key (optional)..." />
+      <p class="server-config">
+        <input type="text" id="server" placeholder="Custom server URL"/>
+      </p>
+      <p class="server-config">
+        <input type="text" id="key" placeholder="Custom server key (optional)" />
       </p>
       <h3>Auto-activate</h3>
       <p>
-        <label
-          ><input type="checkbox" id="auto-activate" /> Automatically activate
-          coplay on applicable sites</label
-        >
+        <label>
+          <input type="checkbox" id="auto-activate" /> Automatically activate coplay on applicable sites
+        </label>
       </p>
     </section>
     <section id="actions">

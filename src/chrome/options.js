@@ -16,7 +16,7 @@ function restore() {
     {
       server: '',
       key: '',
-      autoActivate: false
+      autoActivate: true
     },
     item => {
       server.value = item.server;

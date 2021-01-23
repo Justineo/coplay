@@ -980,5 +980,7 @@
    * Get options and start
    */
   let coplayOptions = JSON.parse(document.body.dataset['coplayOptions']);
-  coplay.init();
+  if (coplayOptions.autoActivate) {
+    coplay.init();
+  }
 })();
