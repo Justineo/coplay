@@ -26,7 +26,7 @@
 
   // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube, ACFun, bilibili, MGTV, Vimeo
   let host = location.host.match(
-    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com|rijula\.com)(?:\/|$)/i
+    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com|rijula\.com|dililitv\.com)(?:\/|$)/i
   );
 
   if (!host) {
@@ -399,6 +399,33 @@
     }
   };
 
+  playerAdaptor.dililitv = {
+    prepare() {
+      this._player = query('.dplayer-video-wrap video');
+    },
+    play() {
+      this._player.play();
+    },
+    pause() {
+      this._player.pause();
+    },
+    seek(sec) {
+      this._player.currentTime = sec;
+    },
+    isReady() {
+      return this._player.readyState === 4;
+    },
+    getTime() {
+      return this._player.currentTime;
+    },
+    toggleFullscreen() {
+      if (fullscreen()) {
+        this._player.exitWindowFullscreen();
+      } else {
+        this._player.enterWindowFullscreen();
+      }
+    }
+  }
   playerAdaptor.rijula = {
     prepare() {
       this._player = query('.dplayer-video-wrap video',document.getElementById("fed-play-iframe").contentWindow.document);
