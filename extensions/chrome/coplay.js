@@ -26,8 +26,9 @@
 
   // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube, ACFun, bilibili, MGTV, Vimeo
   let host = location.host.match(
-    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com)(?:\/|$)/i
+    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com|rijula\.com|dililitv\.com|dililitv\.cc)(?:\/|$)/i
   );
+
   if (!host) {
     return;
   }
@@ -231,6 +232,8 @@
   playerAdaptor.iqiyi = {
     prepare() {
       this._player = query('.iqp-player video');
+      console.log('in prepare iqiyi');
+      console.log(this._player)
     },
     play() {
       this._player.play();
@@ -395,9 +398,10 @@
       query('.fullscreen').click();
     }
   };
-  playerAdaptor.mgtv = {
+
+  playerAdaptor.dililitv = {
     prepare() {
-      this._player = MGTVPlayer.getPlayer();
+      this._player = query('.dplayer-video-wrap video');
     },
     play() {
       this._player.play();
@@ -406,10 +410,65 @@
       this._player.pause();
     },
     seek(sec) {
-      this._player.seek(sec);
+      this._player.currentTime = sec;
     },
     isReady() {
-      return this._player.state === 4;
+      return this._player.readyState === 4;
+    },
+    getTime() {
+      return this._player.currentTime;
+    },
+    toggleFullscreen() {
+      if (fullscreen()) {
+        this._player.exitWindowFullscreen();
+      } else {
+        this._player.enterWindowFullscreen();
+      }
+    }
+  }
+  playerAdaptor.rijula = {
+    prepare() {
+      this._player = query('.dplayer-video-wrap video',document.getElementById("fed-play-iframe").contentWindow.document);
+    },
+    play() {
+      this._player.play();
+    },
+    pause() {
+      this._player.pause();
+    },
+    seek(sec) {
+      this._player.currentTime = sec;
+    },
+    isReady() {
+      return this._player.readyState === 4;
+    },
+    getTime() {
+      return this._player.currentTime;
+    },
+    toggleFullscreen() {
+      if (fullscreen()) {
+        this._player.exitFullscreen();
+      } else {
+        this._player.fullScreen();
+      }
+    }
+  };
+  playerAdaptor.mgtv = {
+    prepare() {
+      // this._player = MGTVPlayer.getPlayer();
+      this._player = query("#mgtv-player-wrap video");
+    },
+    play() {
+      this._player.play();
+    },
+    pause() {
+      this._player.pause();
+    },
+    seek(sec) {
+      this._player.currentTime = sec;
+    },
+    isReady() {
+      return this._player.readyState === 4;
     },
     getTime() {
       return this._player.currentTime;
@@ -452,6 +511,7 @@
   };
 
   function initPlayer(done) {
+    
     let player = Object.assign({}, playerBase, playerAdaptor[host]);
 
     (function init() {
@@ -766,7 +826,7 @@
     coplay.media = media;
     let ui = coplay.ui;
     media.on('stream', stream => {
-      ui.remoteVideo.src = window.URL.createObjectURL(stream);
+      ui.remoteVideo.srcObject = stream;
       ui.localVideo.hidden = false;
       ui.remoteVideo.hidden = false;
       ui.call.hidden = true;
@@ -966,7 +1026,7 @@
       stream => {
         coplay.stream = stream;
         initVideoCallPlayers();
-        coplay.ui.localVideo.src = window.URL.createObjectURL(stream);
+        coplay.ui.localVideo.srcObject = stream;
         if (typeof remote === 'string') {
           // peer id
           let media = coplay.peer.call(remote, stream);
