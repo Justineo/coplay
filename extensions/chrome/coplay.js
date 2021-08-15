@@ -728,7 +728,7 @@
       let url = parseURL(server);
       peerOptions.host = url.host || undefined;
       peerOptions.path = url.path || undefined;
-      peerOptions.port = url.port || undefined;
+      peerOptions.port = url.port || 443;
 
       if (url.protocol === 'https:') {
         peerOptions.secure = true;
