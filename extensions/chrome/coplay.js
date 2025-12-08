@@ -26,11 +26,12 @@
 
   // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube, ACFun, bilibili, MGTV, Vimeo
   let host = location.host.match(
-    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com)(?:\/|$)/i
+    /(?:^|\.)(youku\.com|sohu\.com|tudou\.com|qq\.com|iqiyi\.com|youtube\.com|acfun\.cn|bilibili\.com|mgtv\.com|vimeo\.com|pan\.baidu\.com)(?:\/|$)/i
   );
   if (!host) {
     return;
   }
+
   host = host[1].split('.')[0];
 
   /**
@@ -148,6 +149,49 @@
    * Player adaptor layer
    */
   let playerAdaptor = {};
+  playerAdaptor.pan = {
+    prepare() {
+      let component = undefined;
+      let that = this
+      function WaitForReady() {
+        if (typeof(videojs) == "undefined") {
+          return setTimeout(WaitForReady, 1000);
+        }
+        component = videojs.getPlayers("video-player").html5player;
+        console.log(component)
+        
+        if (typeof(component) == "undefined") {
+          console.log("undefined")
+            return setTimeout(WaitForReady, 1000);
+        }
+        component = videojs.getPlayers("video-player").html5player;
+        that._player = component.tech_
+      }
+      WaitForReady();
+    },
+    play() {
+      this._player.play();
+    },
+    pause() {
+      this._player.pause();
+    },
+    seek(sec) {
+      this._player.setCurrentTime(sec);
+    },
+    isReady() {
+      return this._player.readyState() !== -1;
+    },
+    getTime() {
+      return this._player.currentTime();
+    },
+    toggleFullscreen() {
+      if (fullscreen()) {
+        this._player.exitFullScreen();
+      } else {
+        this._player.enterFullScreen();
+      }
+    }
+  };
   playerAdaptor.youku = {
     prepare() {
       this._player = window.videoPlayer;
@@ -512,6 +556,14 @@
     });
     on(local, 'click', () => {});
 
+    let refresh = create('button', main, {
+      id: getId('refresh'),
+      innerHTML: `${icons['sync']}`
+    });
+    on(refresh, 'click', function() {
+      initPeer()
+    });
+
     let remote = create('input', main, {
       id: getId('remote'),
       type: 'text',
@@ -594,6 +646,7 @@
     coplay.ui = {
       main,
       local,
+      refresh,
       remote,
       connect,
       disconnect,
@@ -834,10 +887,10 @@
           c.send(pack('PATH', getPath()));
           break;
         case 'PATH':
-          if (p.data !== getPath()) {
-            console.error('Not on the same page.');
-            c.close();
-          }
+          // if (p.data !== getPath()) {
+          //   console.error('Not on the same page.');
+          //   c.close();
+          // }
           break;
         case 'MSG':
           console.log('Remote: ' + p.data);
@@ -905,9 +958,13 @@
       reliable: false
     });
 
-    c.on('open', function() {
-      connect(c);
-    });
+    try{
+      c.on('open', function() {
+        connect(c);
+      });
+    } catch (err) {
+      alert("peerId 已过期，请重新获取")
+    }
   };
 
   coplay.disconnect = function() {

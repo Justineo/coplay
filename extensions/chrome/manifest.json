@@ -27,6 +27,7 @@
     "https://*.mgtv.com/*",
     "http://*.vimeo.com/*",
     "https://*.vimeo.com/*",
+    "https://pan.baidu.com/*",
     "activeTab",
     "webNavigation",
     "storage",
