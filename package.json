@@ -12,7 +12,7 @@
     "peer"
   ],
   "devDependencies": {
-    "datauri": "^1.1.0",
+    "datauri": "^4.0.0",
     "gulp": "^4.0.2",
     "gulp-rename": "^1.2.3",
     "gulp-replace": "^0.5.4",
