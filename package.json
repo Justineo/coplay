@@ -17,7 +17,7 @@
     "gulp-rename": "^1.2.3",
     "gulp-replace": "^0.5.4",
     "gulp-svgo": "^1.5.4",
-    "gulp-uglify": "^1.0.0"
+    "gulp-uglify": "^3.0.0"
   },
   "author": "Justineo",
   "license": "MIT",
